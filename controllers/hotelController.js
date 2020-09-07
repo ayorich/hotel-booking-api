@@ -1,0 +1,80 @@
+const fs = require('fs');
+
+const hotels = JSON.parse(
+  fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`)
+);
+exports.getAllHotels = (req, res) => {
+  console.log(req.requestTime);
+  res.status(200).json({
+    status: 'success',
+    requestedAt: req.requestTime,
+    results: hotels.length,
+    data: {
+      hotels,
+    },
+  });
+};
+exports.getHotel = (req, res) => {
+  console.log(req.params);
+  const id = req.params.id * 1;
+  const hotel = hotels.find((el) => el.id === id);
+  // if (id > hotels.length) {
+  if (!hotel) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      hotel,
+    },
+  });
+};
+exports.createHotel = (req, res) => {
+  // console.log(req.body);
+  const newId = hotels[hotels.length - 1].id + 1;
+  const newHotel = Object.assign({ id: newId }, req.body);
+  hotels.push(newHotel);
+  fs.writeFile(
+    `${__dirname}/dev-data/data/hotel-simple.json`,
+    JSON.stringify(hotels),
+    (err) => {
+      res.status(201).json({
+        status: 'success',
+        data: {
+          hotel: newHotel,
+        },
+      });
+    }
+  );
+};
+
+exports.updateHotel = (req, res) => {
+  if (req.params.id * 1 > hotels.length) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(200).json({
+    status: 'Success',
+    data: {
+      hotel: '<updated hotel here.../>',
+    },
+  });
+};
+
+exports.deleteHotel = (req, res) => {
+  if (req.params.id * 1 > hotels.length) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(204).json({
+    status: 'Success',
+    data: null,
+  });
+};
