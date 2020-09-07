@@ -5,7 +5,7 @@ const hotels = JSON.parse(
 );
 
 exports.checkID = (req, res, next, val) => {
-  console.log(`hotel is is:${val}`);
+  // console.log(`hotel is is:${val}`);
 
   if (req.params.id * 1 > hotels.length) {
     return res.status(404).json({
@@ -15,6 +15,19 @@ exports.checkID = (req, res, next, val) => {
   }
   next();
 };
+
+exports.checkBody = (req, res, next) => {
+  console.log(`hotel checkbody`);
+  console.log(req.body.location);
+  if (!req.body.name || !req.body.location) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'MISSING NAME OR LOCATION',
+    });
+  }
+  next();
+};
+
 exports.getAllHotels = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -27,7 +40,7 @@ exports.getAllHotels = (req, res) => {
   });
 };
 exports.getHotel = (req, res) => {
-  console.log(req.params);
+  console.log('req.params');
   const id = req.params.id * 1;
   const hotel = hotels.find((el) => el.id === id);
 
@@ -39,7 +52,7 @@ exports.getHotel = (req, res) => {
   });
 };
 exports.createHotel = (req, res) => {
-  // console.log(req.body);
+  // console.log(req.body.location);
   const newId = hotels[hotels.length - 1].id + 1;
   const newHotel = Object.assign({ id: newId }, req.body);
   hotels.push(newHotel);
