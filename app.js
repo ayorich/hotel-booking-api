@@ -63,6 +63,21 @@ app.post('/api/v1/hotels', (req, res) => {
   );
 });
 
+app.patch('/api/v1/hotels/:id', (req, res) => {
+  if (req.params.id * 1 > hotels.length) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(200).json({
+    status: 'Success',
+    data: {
+      hotel: '<updated hotel here.../>',
+    },
+  });
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`app runing on port ${port}....`);
