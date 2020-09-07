@@ -3,6 +3,18 @@ const fs = require('fs');
 const hotels = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`)
 );
+
+exports.checkID = (req, res, next, val) => {
+  console.log(`hotel is is:${val}`);
+
+  if (req.params.id * 1 > hotels.length) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'Invalid ID',
+    });
+  }
+  next();
+};
 exports.getAllHotels = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -18,13 +30,7 @@ exports.getHotel = (req, res) => {
   console.log(req.params);
   const id = req.params.id * 1;
   const hotel = hotels.find((el) => el.id === id);
-  // if (id > hotels.length) {
-  if (!hotel) {
-    return res.status(404).json({
-      status: 'Fail',
-      message: 'Invalid ID',
-    });
-  }
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -52,12 +58,6 @@ exports.createHotel = (req, res) => {
 };
 
 exports.updateHotel = (req, res) => {
-  if (req.params.id * 1 > hotels.length) {
-    return res.status(404).json({
-      status: 'Fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(200).json({
     status: 'Success',
     data: {
@@ -67,12 +67,6 @@ exports.updateHotel = (req, res) => {
 };
 
 exports.deleteHotel = (req, res) => {
-  if (req.params.id * 1 > hotels.length) {
-    return res.status(404).json({
-      status: 'Fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(204).json({
     status: 'Success',
     data: null,
