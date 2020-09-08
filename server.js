@@ -7,6 +7,7 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
+
 // mongoose
 //   .connect(DB, {
 //     useNewUrlParser: true,
@@ -17,15 +18,12 @@ const DB = process.env.DATABASE.replace(
 //     console.log(con.connections);
 //     console.log('DB connections successful');
 //   });
-(async () => {
-  const con = await mongoose.connect(DB, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  });
-  console.log(con.connections);
-  console.log('DB connections successful');
-})();
+
+mongoose.connect(DB, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
 
 const port = process.env.PORT || 3000;
 
