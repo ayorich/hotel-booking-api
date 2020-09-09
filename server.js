@@ -24,6 +24,35 @@ mongoose.connect(DB, {
   useCreateIndex: true,
   useFindAndModify: false,
 });
+const hotelSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'A hotel must have a name'],
+    unique: true,
+  },
+  rating: {
+    type: Number,
+    default: 4.5,
+  },
+  price: {
+    type: Number,
+    required: [true, 'A hotel must have a price'],
+  },
+});
+const Hotel = mongoose.model('Hotel', hotelSchema);
+const testHotel = new Hotel({
+  name: 'hotel de smartees',
+  price: 997,
+});
+
+testHotel
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log('error:', err);
+  });
 
 const port = process.env.PORT || 3000;
 
