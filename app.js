@@ -3,9 +3,10 @@ const morgan = require('morgan');
 
 const hotelRouter = require('./routes/hotelRoutes');
 const userRouter = require('./routes/userRoutes');
+
 const app = express();
 
-//1) MIDDLEWARES
+// 1) MIDDLEWARES
 if (process.env.NODE_ENV === 'development') {
   console.log(process.env.NODE_ENV);
 }
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//2) ROUTES
+// 2) ROUTES
 app.use('/api/v1/hotels', hotelRouter);
 app.use('/api/v1/users', userRouter);
 

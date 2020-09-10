@@ -2,27 +2,40 @@ const Hotel = require('../models/hotelModel');
 
 // const hotels = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`));
 
-exports.getAllHotels = (req, res) => {
-  //   console.log(req.requestTime);
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestTime,
-    // results: hotels.length,
-    // data: {
-    //   hotels,
-    // },
-  });
+exports.getAllHotels = async (req, res) => {
+  try {
+    const hotels = await Hotel.find();
+
+    res.status(200).json({
+      status: 'success',
+      results: hotels.length,
+      data: {
+        hotels,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };
-exports.getHotel = (req, res) => {
-  //   console.log('req.params');
-  // const id = req.params.id * 1;
-  // const hotel = hotels.find((el) => el.id === id);
-  // res.status(200).json({
-  //   status: 'success',
-  //   data: {
-  //     hotel,
-  //   },
-  // });
+exports.getHotel = async (req, res) => {
+  try {
+    const hotel = await Hotel.findById(req.params.id);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        hotel,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err,
+    });
+  }
 };
 exports.createHotel = async (req, res) => {
   try {
