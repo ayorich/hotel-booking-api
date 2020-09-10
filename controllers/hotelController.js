@@ -1,18 +1,6 @@
-// const Hotel = require('../models/hotelModel');
+const Hotel = require('../models/hotelModel');
 
 // const hotels = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`));
-
-exports.checkBody = (req, res, next) => {
-  //   console.log('hotel checkbody');
-  //   console.log(req.body.location);
-  if (!req.body.name || !req.body.location) {
-    return res.status(404).json({
-      status: 'Fail',
-      message: 'MISSING NAME OR LOCATION',
-    });
-  }
-  next();
-};
 
 exports.getAllHotels = (req, res) => {
   //   console.log(req.requestTime);
@@ -36,13 +24,22 @@ exports.getHotel = (req, res) => {
   //   },
   // });
 };
-exports.createHotel = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    // data: {
-    //   hotel: newHotel,
-    // },
-  });
+exports.createHotel = async (req, res) => {
+  try {
+    const newHotel = await Hotel.create(req.body);
+
+    res.status(201).json({
+      status: 'success',
+      data: {
+        hotel: newHotel,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'Invalid data sent!',
+    });
+  }
 };
 
 exports.updateHotel = (req, res) => {

@@ -3,9 +3,9 @@ const hotelController = require('../controllers/hotelController');
 
 const router = express.Router();
 
-router.param('id', hotelController.checkID);
+// router.param('id', hotelController.checkgID);
 
-router.route('/').get(hotelController.getAllHotels).post(hotelController.checkBody, hotelController.createHotel);
+router.route('/').get(hotelController.getAllHotels).post(hotelController.createHotel);
 router
   .route('/:id')
   .get(hotelController.getHotel)
