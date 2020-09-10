@@ -1,10 +1,12 @@
 const Hotel = require('../models/hotelModel');
+const apiFeatures = require('../utils/apiFeatures');
 
 // const hotels = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`));
+
 // ALIASING AN ENDPOINT(PREFILLED)
 exports.alaisTopHotels = (req, res, next) => {
-  req.params.limit = '5';
-  req.query.sort = '-ratingsAverage,price';
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,-price';
   req.query.fields = 'name,price,ratingsAverage,summary,city';
   next();
 };
@@ -12,44 +14,18 @@ exports.alaisTopHotels = (req, res, next) => {
 exports.getAllHotels = async (req, res) => {
   try {
     // BUILD QUERY
+    const hotelData = Hotel.find();
     // 1a. FILTERING
-    const queryObj = { ...req.query };
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach((el) => delete queryObj[el]);
-
-    // 1b.ADVANCED FILTERING
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    let query = Hotel.find(JSON.parse(queryStr));
+    let query = apiFeatures.filter(hotelData, req.query);
 
     // 2.SORTING
-    if (req.query.sort) {
-      const sortBy = req.query.sort.split(',').join(' ');
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort('-createdAt');
-    }
+    query = apiFeatures.sort(hotelData, req.query);
 
     // 3.LIMITING FIELD QUERY
-    if (req.query.fields) {
-      const fields = req.query.fields.split(',').join(' ');
-      query = query.select(fields);
-    } else {
-      query = query.select('-__v');
-    }
+    query = apiFeatures.limitFields(hotelData, req.query);
 
     // 4. PAGINATION
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 100;
-    const skip = (page - 1) * limit;
-
-    query = query.skip(skip).limit(limit);
-
-    if (req.query.page) {
-      const numHotel = await Hotel.countDocuments();
-      if (skip >= numHotel) throw new Error('This page does not exist');
-    }
+    query = apiFeatures.pagination(hotelData, req.query, Hotel);
 
     // EXECUTE QUERY
     // query.sort().select().skip().limit()

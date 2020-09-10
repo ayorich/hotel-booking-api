@@ -4,9 +4,15 @@ const hotelController = require('../controllers/hotelController');
 const router = express.Router();
 
 // router.param('id', hotelController.checkgID);
-router.route('/top-5-cheap').get(hotelController.alaisTopHotels, hotelController.getAllHotels);
 
-router.route('/').get(hotelController.getAllHotels).post(hotelController.createHotel);
+router
+  .route('/top-5-cheap')
+  .get(hotelController.alaisTopHotels, hotelController.getAllHotels);
+
+router
+  .route('/')
+  .get(hotelController.getAllHotels)
+  .post(hotelController.createHotel);
 
 router
   .route('/:id')
