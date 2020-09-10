@@ -50,7 +50,7 @@ exports.createHotel = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: 'Invalid data sent!',
+      message: err,
     });
   }
 };
@@ -76,9 +76,17 @@ exports.updateHotel = async (req, res) => {
   }
 };
 
-exports.deleteHotel = (req, res) => {
-  res.status(204).json({
-    status: 'Success',
-    data: null,
-  });
+exports.deleteHotel = async (req, res) => {
+  try {
+    await Hotel.findByIdAndDelete(req.params.id);
+    res.status(204).json({
+      status: 'Success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'delete failed',
+    });
+  }
 };
