@@ -1,6 +1,7 @@
 const Hotel = require('../models/hotelModel');
 
 // const hotels = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`));
+// ALIASING AN ENDPOINT(PREFILLED)
 exports.alaisTopHotels = (req, res, next) => {
   req.params.limit = '5';
   req.query.sort = '-ratingsAverage,price';
