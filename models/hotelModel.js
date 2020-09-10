@@ -62,8 +62,10 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     default: 'Hotel',
   },
-  pets: {
-    type: String,
+  allowPets: {
+    type: Boolean,
+    trim: true,
+    default: false,
   },
   amenities: [String],
 });

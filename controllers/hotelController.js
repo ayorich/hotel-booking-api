@@ -4,6 +4,7 @@ const Hotel = require('../models/hotelModel');
 
 exports.getAllHotels = async (req, res) => {
   try {
+    console.log(req.query);
     const hotels = await Hotel.find();
 
     res.status(200).json({
