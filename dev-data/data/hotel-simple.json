@@ -13,7 +13,7 @@
     "city": "Maimi",
     "state": "Florida",
     "roomsQuantity": 87,
-    "roomsAvailable": 45,
+    "roomsAvailable": 125,
     "hotelType": "hotel",
     "allowPets": true,
     "roomsType": [
@@ -141,9 +141,9 @@
     "city": "houston",
     "state": "Texas",
     "roomsQuantity": 487,
-    "roomsAvailable": 155,
+    "roomsAvailable": 255,
     "hotelType": "hotel",
-    "allowPets": false,
+    "allowPets": true,
     "roomsType": [
       { "name": "Gold Room", "price": 536 },
       { "name": "Platinum Room", "price": 756 },
