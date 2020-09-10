@@ -50,3 +50,6 @@ if (process.argv[2] === '--import') {
 }
 
 console.log(process.argv);
+
+// COMMAND CODE LINE EXECUTION
+// node dev-data/data/import-dev-data.js --delete/--import
