@@ -1,6 +1,12 @@
 const Hotel = require('../models/hotelModel');
 
 // const hotels = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`));
+exports.alaisTopHotels = (req, res, next) => {
+  req.params.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,city';
+  next();
+};
 
 exports.getAllHotels = async (req, res) => {
   try {
@@ -32,7 +38,7 @@ exports.getAllHotels = async (req, res) => {
       query = query.select('-__v');
     }
 
-    // PAGINATION
+    // 4. PAGINATION
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 100;
     const skip = (page - 1) * limit;
