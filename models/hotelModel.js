@@ -36,6 +36,7 @@ const hotelSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now(),
+    select: false, // NOT TO SHOW BY DEFAULT WHEN REQUESTED
   },
   roomsQuantity: {
     type: Number,
