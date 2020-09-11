@@ -4,8 +4,9 @@
   "description": "hotel booking api",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js"
+    "start": "nodemon ./src/server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "lint": "node_modules/.bin/eslint --fix src/**/*.js"
   },
   "author": "ayodele kayode",
   "license": "ISC",
