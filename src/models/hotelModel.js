@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const roomSchema = new mongoose.Schema({
   name: {
@@ -19,6 +20,7 @@ const hotelSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  slug: String,
   ratingsAverage: {
     type: Number,
     default: 3.0,
@@ -84,6 +86,19 @@ const hotelSchema = new mongoose.Schema({
   amenities: [String],
   roomsType: [roomSchema],
 });
+
+// DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
+// eslint-disable-next-line func-names
+hotelSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// hotelSchema.post('save', (doc, next) => {
+//   console.log(doc);
+//   next();
+// });
+
 const Hotel = mongoose.model('Hotel', hotelSchema);
 
 module.exports = Hotel;
