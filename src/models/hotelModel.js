@@ -1,5 +1,17 @@
 const mongoose = require('mongoose');
 
+const roomSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'A room must have a name'],
+    trim: true,
+  },
+  price: {
+    type: Number,
+    required: [true, 'A room must have a price'],
+  },
+});
+
 const hotelSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -62,6 +74,7 @@ const hotelSchema = new mongoose.Schema({
   hotelType: {
     type: String,
     default: 'Hotel',
+    trim: true,
   },
   allowPets: {
     type: Boolean,
@@ -69,6 +82,7 @@ const hotelSchema = new mongoose.Schema({
     default: false,
   },
   amenities: [String],
+  roomsType: [roomSchema],
 });
 const Hotel = mongoose.model('Hotel', hotelSchema);
 

@@ -9,6 +9,8 @@ router
   .route('/top-5-cheap')
   .get(hotelController.alaisTopHotels, hotelController.getAllHotels);
 
+router.route('/hotel-stats').get(hotelController.getHotelStats);
+
 router
   .route('/')
   .get(hotelController.getAllHotels)

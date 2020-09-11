@@ -60,7 +60,7 @@ exports.getHotel = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message: err.message,
     });
   }
 };
@@ -77,7 +77,7 @@ exports.createHotel = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: err,
+      message: err.message,
     });
   }
 };
@@ -98,7 +98,7 @@ exports.updateHotel = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message: err.message,
     });
   }
 };
@@ -111,9 +111,65 @@ exports.deleteHotel = async (req, res) => {
       data: null,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(404).json({
       status: 'fail',
-      message: 'delete failed',
+      message: err.message,
+    });
+  }
+};
+
+exports.getHotelStats = async (req, res) => {
+  try {
+    const stats = await Hotel.aggregate([
+      {
+        $match: {
+          ratingsAverage: { $gte: 1 },
+        },
+      },
+
+      {
+        $group: {
+          // _id: { $toUpper: '$hotelType' },
+          _id: { $trim: { input: { $toUpper: '$hotelType' } } },
+          numHotel: { $sum: 1 },
+          numRatings: { $sum: '$ratingsQuantity' },
+          avgRating: { $avg: '$ratingsAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$price' },
+        },
+      },
+      {
+        $addFields: {
+          hotelType: '$_id',
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          avgPrice: -1,
+        },
+      },
+      // {
+      //   $match: {
+      //     _id: { $ne: 'HOTEL' },
+      //   },
+      // },
+    ]);
+    res.status(200).json({
+      status: 'Success',
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
     });
   }
 };
