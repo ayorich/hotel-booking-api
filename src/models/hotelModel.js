@@ -20,11 +20,15 @@ const hotelSchema = new mongoose.Schema({
     required: [true, 'A hotel must have a name'],
     unique: true,
     trim: true,
+    maxlength: [40, 'A hotel name must have equal or less than 40 characters'],
+    minlength: [10, 'A hotel name must have equal or more than 10 characters'],
   },
   slug: String,
   ratingsAverage: {
     type: Number,
     default: 3.0,
+    min: [1, 'Rating must be above 1.0'],
+    max: [5, 'Rating must be below 5.0'],
   },
   ratingsQuantity: {
     type: Number,

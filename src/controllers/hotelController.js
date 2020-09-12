@@ -42,7 +42,7 @@ exports.getAllHotels = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err.message,
+      message: err,
     });
   }
 };
@@ -60,7 +60,7 @@ exports.getHotel = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err.message,
+      message: err,
     });
   }
 };
@@ -77,7 +77,7 @@ exports.createHotel = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'fail',
-      message: err.message,
+      message: err,
     });
   }
 };
@@ -102,7 +102,7 @@ exports.updateHotel = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err.message,
+      message: err,
     });
   }
 };
@@ -117,7 +117,7 @@ exports.deleteHotel = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err.message,
+      message: err,
     });
   }
 };
