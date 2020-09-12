@@ -6,7 +6,7 @@ const apiFeatures = require('../utils/apiFeatures');
 // ALIASING AN ENDPOINT(PREFILLED)
 exports.alaisTopHotels = (req, res, next) => {
   req.query.limit = '5';
-  req.query.sort = '-ratingsAverage,-price';
+  req.query.sort = 'price,-ratingsAverage';
   req.query.fields = 'name,price,ratingsAverage,summary,city';
   next();
 };
@@ -84,6 +84,10 @@ exports.createHotel = async (req, res) => {
 
 exports.updateHotel = async (req, res) => {
   try {
+    const reqBody = Object.keys(req.body).length;
+
+    if (reqBody === 0) throw new Error('update body is empty');
+    // eslint-disable-next-line no-extra-boolean-cast
     const hotel = await Hotel.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,

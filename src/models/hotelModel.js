@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 
@@ -72,7 +73,6 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A hotel must have an state'],
   },
-
   hotelType: {
     type: String,
     default: 'Hotel',
@@ -80,45 +80,38 @@ const hotelSchema = new mongoose.Schema({
   },
   allowPets: {
     type: Boolean,
-    trim: true,
     default: false,
   },
-  amenities: [String],
-  roomsType: [roomSchema],
   listingStatus: {
     type: Boolean,
     default: true,
   },
+  amenities: [String],
+  roomsType: [roomSchema],
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
-// eslint-disable-next-line func-names
 hotelSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
-// hotelSchema.post('save', (doc, next) => {
-//   console.log(doc);
-//   next();
-// });
-
-// QUERY MIDDLEWARE
-// eslint-disable-next-line func-names
+// QUERY MIDDLEWARE: for any route that calls find**
 hotelSchema.pre(/^find/, function (next) {
   // hotelSchema.pre('find', function (next) {
-  this.find({ listingStatus: { $ne: false } });
-
-  this.start = Date.now();
+  if (this._update) {
+    this.find();
+  } else {
+    this.find({ listingStatus: { $ne: false } });
+  }
   next();
 });
 
-// eslint-disable-next-line func-names
-// hotelSchema.post(/^find/, function (docs, next) {
-//   console.log(`Query took ${Date.now() - this.start} milleseconds`);
-//   console.log(docs);
-//   next();
-// });
+// AGGREGATION MIDDLEWARE : for route /hotel-stats
+hotelSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { listingStatus: { $ne: false } } });
+  next();
+});
 
 const Hotel = mongoose.model('Hotel', hotelSchema);
 
