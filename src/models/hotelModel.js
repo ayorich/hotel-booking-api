@@ -85,6 +85,10 @@ const hotelSchema = new mongoose.Schema({
   },
   amenities: [String],
   roomsType: [roomSchema],
+  listingStatus: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
@@ -96,6 +100,23 @@ hotelSchema.pre('save', function (next) {
 
 // hotelSchema.post('save', (doc, next) => {
 //   console.log(doc);
+//   next();
+// });
+
+// QUERY MIDDLEWARE
+// eslint-disable-next-line func-names
+hotelSchema.pre(/^find/, function (next) {
+  // hotelSchema.pre('find', function (next) {
+  this.find({ listingStatus: { $ne: false } });
+
+  this.start = Date.now();
+  next();
+});
+
+// eslint-disable-next-line func-names
+// hotelSchema.post(/^find/, function (docs, next) {
+//   console.log(`Query took ${Date.now() - this.start} milleseconds`);
+//   console.log(docs);
 //   next();
 // });
 
