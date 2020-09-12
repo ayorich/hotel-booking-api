@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon ./src/server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "lint": "node_modules/.bin/eslint --fix src/**/*.js"
+    "lint": "node_modules/.bin/eslint --fix src/**/*.js",
+    "debug": "ndb ./src/server.js"
   },
   "author": "ayodele kayode",
   "license": "ISC",
