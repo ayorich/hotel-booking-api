@@ -25,6 +25,13 @@ exports.getAllHotels = async (req, res) => {
     query = apiFeatures.limitFields(hotelData, req.query);
 
     // 4. PAGINATION
+    /**
+     * use for pagination when specified.
+     * @param {hotelData} hotelData first Arg - query returned on Find().
+     * @param {req.query} req.query Second Arg - request query.
+     * @param {Hotel} Hotel Third Arg- hotel model.
+     * @returns {query} paginated query.
+     */
     query = apiFeatures.pagination(hotelData, req.query, Hotel);
 
     // EXECUTE QUERY

@@ -33,6 +33,14 @@ exports.limitFields = (query, queryString) => {
   return queryValue;
 };
 
+/**
+ * use for pagination.
+ * @param {query} query first Arg - query to be passed.
+ * @param {req.query} req.query Second Arg - request query-string object.
+ * @param {Model} Model Third Arg- hotel Model.
+ * @returns {queryValue} paginated query.
+ */
+
 exports.pagination = async (query, queryString, Model) => {
   const page = queryString.page * 1 || 1;
   const limit = queryString.limit * 1 || 100;
