@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+// const validator = require('validator');
 
 const roomSchema = new mongoose.Schema({
   name: {
@@ -38,7 +39,16 @@ const hotelSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'A hotel must have an average price'],
   },
-  priceDiscount: Number,
+  priceDiscount: {
+    type: Number,
+    // DOESNOT WORK FOR UPDATE QUERY
+    // validate: {
+    //   validator(val) {
+    //     return val < this.price;
+    //   },
+    //   message: 'Discount price({VALUE}) should be below regular price',
+    // },
+  },
   summary: {
     type: String,
     trim: true,
