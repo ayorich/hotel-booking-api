@@ -7,11 +7,12 @@
 class AppError extends Error {
   // eslint-disable-next-line require-jsdoc
   constructor(message, statusCode) {
-    super(message);
+    super();
 
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
     this.isOperational = true;
+    this.message = message;
 
     Error.captureStackTrace(this, this.constructor);
   }
