@@ -12,11 +12,11 @@ const handleDuplicateFieldsDB = (err) => {
   return new AppError(message, 400);
 };
 
-const handleValidationErrorDB = (err) => {
-  const errors = Object.values(err.errors).map((el) => el.message);
-  const message = `Invalid input data. ${errors.join('. ')} `;
-  return new AppError(message, 400);
-};
+// const handleValidationErrorDB = (err) => {
+//   const errors = Object.values(err.errors).map((el) => el.message);
+//   const message = `Invalid input data. ${errors.join('. ')} `;
+//   return new AppError(message, 400);
+// };
 
 const sendErrorDev = (err, res) => {
   // console.error('ERROR', err);
@@ -61,12 +61,23 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     console.error('prod', error);
+    
+    // ERROR FOR UNKOWN ID
     if (error.kind === 'ObjectId')error = handleCastErrorDB(error);
+
+    // ERROR FOR DUPLICATE FIELDS
     if (error.code === 11000)error = handleDuplicateFieldsDB(error);
     
-    // eslint-disable-next-line no-underscore-dangle
-    const errorCheck = error._message.split(' ').includes('validation');
-    if (errorCheck) error = handleValidationErrorDB(error);
+    // ERROR FOR MONGOOSE VALIDATION
+    /**
+     * @todo to find a more reliable way to check for mongoose validation error in the future
+      */
+    // let errorCheck;
+    // if (error) {
+    //   // eslint-disable-next-line no-underscore-dangle
+    //   errorCheck = error._message.split(' ').includes('validation');
+    // }
+    // if (errorCheck) error = handleValidationErrorDB(error);
     
     sendErrorProd(error, res);
   }
