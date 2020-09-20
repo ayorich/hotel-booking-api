@@ -18,6 +18,10 @@ const handleDuplicateFieldsDB = (err) => {
 //   return new AppError(message, 400);
 // };
 
+const handleJWTError = () => new AppError('Invalid token. Please log in again', 401);
+
+const handleJWTExpiredError = () => new AppError('Your token has expired!. Please log in again', 401);
+
 const sendErrorDev = (err, res) => {
   // console.error('ERROR', err);
   res.status(err.statusCode).json({
@@ -67,6 +71,12 @@ module.exports = (err, req, res, next) => {
 
     // ERROR FOR DUPLICATE FIELDS
     if (error.code === 11000)error = handleDuplicateFieldsDB(error);
+    
+    // ERROR FOR BAD TOKEN
+    if (error.name === 'JsonWebTokenError')error = handleJWTError();
+    
+    // ERROR FOR EXPIRED TOKEN
+    if (error.name === 'TokenExpiredError')error = handleJWTExpiredError();
     
     // ERROR FOR MONGOOSE VALIDATION
     /**

@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide a password'],
-    minlength: 8
+    minlength: 8,
+    select: false
   },
   passwordConfirm: {
     type: String,
@@ -30,7 +31,8 @@ const userSchema = new mongoose.Schema({
     },
     message: 'Password are not the same'
  
-  }
+  },
+  passwordChangedAt: Date
 });
 
 // eslint-disable-next-line func-names
@@ -40,11 +42,29 @@ userSchema.pre('save', async function (next) {
   
   // HASH THE PASSWORD
   this.password = await bcrypt.hash(this.password, 12);
+  
   // DELETE THE PASSWORDCONFIRM
   this.passwordConfirm = undefined;
   
   next();
 });
+
+userSchema.methods.correctPassword = async (candidatePassword, userPassword) => {
+  const isCorrect = await bcrypt.compare(candidatePassword, userPassword);
+  return isCorrect;
+};
+
+// eslint-disable-next-line func-names
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+    
+    // return true if passwordChanged(on 12th-sept-2020) after JWTToken is issued(on 11th-sept-2020)
+    return JWTTimestamp < changedTimestamp;
+  }
+  
+  return false;
+};
 
 const User = mongoose.model('User', userSchema);
 
