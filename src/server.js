@@ -29,6 +29,7 @@ mongoose.connect(DB, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
+  useUnifiedTopology: true
 });
 
 const port = process.env.PORT || 3000;

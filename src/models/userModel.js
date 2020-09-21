@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     select: false
   },
+
   passwordConfirm: {
     type: String,
     required: [true, 'please confirm your password'],
@@ -43,7 +45,6 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date
 });
 
-// eslint-disable-next-line func-names
 userSchema.pre('save', async function (next) {
   // ONLY RUN IF PASSWORD IS ONLY MODIFIED
   if (!this.isModified('password')) return next();
@@ -57,12 +58,18 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000;
+
+  next();
+});
 userSchema.methods.correctPassword = async (candidatePassword, userPassword) => {
   const isCorrect = await bcrypt.compare(candidatePassword, userPassword);
   return isCorrect;
 };
 
-// eslint-disable-next-line func-names
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
@@ -74,12 +81,11 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
-// eslint-disable-next-line func-names
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
 
   this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-  console.log({ resetToken }, this.passwordResetToken);
+  // console.log({ resetToken }, this.passwordResetToken);
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
