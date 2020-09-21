@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
 const xss = require('xss-clean');
 
 const AppError = require('./utils/appError');
@@ -39,6 +40,13 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS
 app.use(xss());
+
+// prevent parameter pollution and use whitelist to add double query params
+app.use(hpp({
+  whitelist: [
+    'hotelType', 'ratingsAverage', 'ratingsQuantity','price'    '
+  ]
+}));
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
