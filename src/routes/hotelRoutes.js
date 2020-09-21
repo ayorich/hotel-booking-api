@@ -16,7 +16,7 @@ router
   .route('/')
   .get(authController.protect, hotelController.getAllHotels)
   .post(hotelController.createHotel);
-
+  
 router
   .route('/:id')
   .get(hotelController.getHotel)
