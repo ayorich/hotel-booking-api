@@ -10,19 +10,23 @@ const signToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, {
   expiresIn: process.env.JWT_EXPIRES_IN
 });
 
+const createSendToken = (user, statusCode, res) => {
+  // eslint-disable-next-line no-underscore-dangle
+  const token = signToken(user._id);
+  
+  res.status(statusCode).json({
+    status: 'Success',
+    token,
+    // data: {
+    //   user
+    // }
+  });
+};
+
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
   
-  // eslint-disable-next-line no-underscore-dangle
-  const token = signToken(newUser._id);
-  
-  res.status(201).json({
-    status: 'Success',
-    token,
-    data: {
-      user: newUser
-    }
-  });
+  createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -45,13 +49,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
  
   // 3. IF EVERYTHING OK, SEND TOKEN TO CLIENT
-  // eslint-disable-next-line no-underscore-dangle
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: 'sucess',
-    token
-  });
+  createSendToken(user, 200, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -96,9 +94,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError('There is no user with this email address', 404));
   }
+  
   // 2. GENERATE THE RANDOM RESET TOKEN
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
+
   // 3.SEND IT TO USER'S EMAIL
   const resetURL = `${req.protocol}://${req.get('host')}/api/vi/users/resetPassword/${resetToken}`;
   
@@ -122,6 +122,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     return next(new AppError('There was an error sending the email. Try again later', 500));
   }
 });
+
 exports.resetPassword = catchAsync(async (req, res, next) => {
 // 1.GET USER BASED ON THE TOKEN
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
@@ -129,22 +130,35 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({
     passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() }
   });
+
   // 2.IF TOKEN HAS NOT EXPIRED, AND THERE IS USER, SET THE PASSWORD
   if (!user) return next(new AppError('Token is invalid or has expired', 400));
  
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
+  
+  // 3.UPDATE CHANGEDPASSWORDAT PROPERTY FOR USER
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-  // 3.UPDATE CHANGEDPASSWORDAT PROPERTY FOR USER
 
   // 4.LOG THE USER IN , SEND JWT
-  // eslint-disable-next-line no-underscore-dangle
-  const token = signToken(user._id);
+  createSendToken(user, 200, res);
+});
 
-  res.status(200).json({
-    status: 'sucess',
-    token
-  });
+exports.updatePassword = catchAsync(async (req, res, next) => {
+// 1. Get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+  
+  // 2.check if POSTed current password is correct
+  if (!user.correctPassword(req.body.passwordCurrent, user.password)) {
+    return next(new AppError('Your current password is wrong.', 401));
+  }
+  // 3.if so, update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+
+  // 4. log user in, send JWT
+  createSendToken(user, 200, res);
 });
