@@ -44,7 +44,7 @@ app.use(xss());
 // prevent parameter pollution and use whitelist to add double query params
 app.use(hpp({
   whitelist: [
-    'hotelType', 'ratingsAverage', 'ratingsQuantity','price'    '
+    'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
   ]
 }));
 
