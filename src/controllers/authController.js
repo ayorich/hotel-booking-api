@@ -41,6 +41,8 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password');
 
   if (user) {
+    if (!user.active) return next(new AppError('Your Account as been deactivated. Please do contact support'));
+    
     const correct = user.correctPassword(password, user.password);
 
     if (!correct) return next(new AppError('Incorrect email or password', 401));
@@ -94,7 +96,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   if (!user) {
     return next(new AppError('There is no user with this email address', 404));
   }
-  
+
   // 2. GENERATE THE RANDOM RESET TOKEN
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
