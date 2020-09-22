@@ -106,24 +106,27 @@ const hotelSchema = new mongoose.Schema({
     roomsAvailable: {
       type: Number,
     },
-  
+
   }],
   hotelAdmins: [
     {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
     },
-    
+
   ]
 
-},
-{
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
-});
+}, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 hotelSchema.virtual('totalRooms').get(function () {
-  return Object.values(this.roomTypes).reduce((total, { roomsQuantity }) => total + roomsQuantity, 0);
+  let totalRooms;
+
+  if (this.roomTypes) {
+    totalRooms = Object.values(this.roomTypes)
+      .reduce((total, { roomsQuantity }) => total + roomsQuantity, 0);
+  }
+
+  return totalRooms;
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
