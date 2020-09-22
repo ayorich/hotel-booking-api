@@ -15,7 +15,7 @@ exports.alaisTopHotels = (req, res, next) => {
 
 exports.getAllHotels = catchAsync(async (req, res, next) => {
   // BUILD QUERY
-  const hotelData = Hotel.find();
+  const hotelData = Hotel.find().select('-hotelAdmins');
   // 1a. FILTERING
   let query = apiFeatures.filter(hotelData, req.query);
 
@@ -50,7 +50,17 @@ exports.getAllHotels = catchAsync(async (req, res, next) => {
 });
 
 exports.getHotel = catchAsync(async (req, res, next) => {
-  const hotel = await Hotel.findById(req.params.id);
+  let hotel;
+
+  if (req.user.role === 'user') {
+    hotel = await Hotel.findById(req.params.id).select('-hotelAdmins');
+  } else {
+    hotel = await Hotel.findById(req.params.id).populate({
+      path: 'hotelAdmins',
+      select: '-__v -passwordChangedAt'
+    });
+  }
+
   if (!hotel) {
     return next(new AppError('No hotel found with that ID', 404));
   }

@@ -17,10 +17,10 @@
     "hotelType": "hotel",
     "listingStatus": true,
     "allowPets": true,
-    "roomsType": [
-      { "name": "Standard Room", "price": 197 },
-      { "name": "Executive Room", "price": 397 },
-      { "name": "Deluxe Suite", "price": 597 }
+    "roomTypes": [
+      { "name": "Standard Room", "price": 197,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Executive Room", "price": 397,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Deluxe Suite", "price": 597,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -54,12 +54,12 @@
     "allowPets": false,
     "hotelType": "hotel",
     "listingStatus": true,
-    "roomsType": [
-      { "name": "Standard Room", "price": 236 },
-      { "name": "Executive Room", "price": 397 },
-      { "name": "Deluxe Suite", "price": 597 },
-      { "name": "Platinum Room", "price": 756 },
-      { "name": "Mayor Room", "price": 1193 }
+    "roomTypes": [
+      { "name": "Standard Room", "price": 236,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Executive Room", "price": 397,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Deluxe Suite", "price": 597,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Platinum Room", "price": 756,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 1193,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -100,11 +100,11 @@
     "allowPets": true,
     "hotelType": "hotel",
     "listingStatus": true,
-    "roomsType": [
-      { "name": "Standard Room", "price": 336 },
-      { "name": "Executive Room", "price": 440 },
-      { "name": "Deluxe Suite", "price": 697 },
-      { "name": "Platinum Room", "price": 956 }
+    "roomTypes": [
+      { "name": "Standard Room", "price": 336,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Executive Room", "price": 440 ,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Deluxe Suite", "price": 697,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Platinum Room", "price": 956,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -144,11 +144,11 @@
     "hotelType": "Luxury Hotel",
     "allowPets": false,
     "listingStatus": true,
-    "roomsType": [
-      { "name": "Gold Room", "price": 1236 },
-      { "name": "Platinum Room", "price": 2756 },
-      { "name": "Mayor Room", "price": 3193 },
-      { "name": "Presidential Room", "price": 7590 }
+    "roomTypes": [
+      { "name": "Gold Room", "price": 1236,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Platinum Room", "price": 2756,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 3193 ,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Presidential Room", "price": 7590,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -193,12 +193,12 @@
     "hotelType": "Luxury Hotel",
     "listingStatus": true,
     "allowPets": true,
-    "roomsType": [
-      { "name": "Executive Room", "price": 336 },
-      { "name": "Gold Room", "price": 536 },
-      { "name": "Platinum Room", "price": 756 },
-      { "name": "Mayor Room", "price": 993 },
-      { "name": "Presidential Room", "price": 1190 }
+    "roomTypes": [
+      { "name": "Executive Room", "price": 336,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Gold Room", "price": 536,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Platinum Room", "price": 756 ,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Mayor Room", "price": 993 ,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Presidential Room", "price": 1190 ,"roomsQuantity":67, "roomsAvailable":33 }
     ],
     "amenities": [
       "Wireless Internet",
@@ -237,11 +237,11 @@
     "allowPets": true,
     "hotelType": "Luxury Hotel",
     "listingStatus": true,
-    "roomsType": [
-      { "name": "Gold Room", "price": 536 },
-      { "name": "Platinum Room", "price": 756 },
-      { "name": "Mayor Room", "price": 1193 },
-      { "name": "Presidential Room", "price": 1590 }
+    "roomTypes": [
+      { "name": "Gold Room", "price": 536,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Platinum Room", "price": 756,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 1193,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Presidential Room", "price": 1590,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -282,11 +282,11 @@
     "hotelType": " Hotel",
     "listingStatus": true,
     "allowPets": true,
-    "roomsType": [
-      { "name": "Gold Room", "price": 768 },
-      { "name": "Platinum Room", "price": 1256 },
-      { "name": "Mayor Room", "price": 1493 },
-      { "name": "Executive Suite", "price": 1556 }
+    "roomTypes": [
+      { "name": "Gold Room", "price": 768,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Platinum Room", "price": 1256,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 1493,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Executive Suite", "price": 1556,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -326,12 +326,12 @@
     "listingStatus": true,
     "hotelType": "Hotel & Spa",
     "allowPets": true,
-    "roomsType": [
-      { "name": "Gold Room", "price": 836 },
-      { "name": "Mayor Room", "price": 1233 },
-      { "name": "Executive Suite", "price": 1556 },
-      { "name": "Mini Presidential", "price": 1936 },
-      { "name": "Presidential Room", "price": 3090 }
+    "roomTypes": [
+      { "name": "Gold Room", "price": 836,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 1233,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Executive Suite", "price": 1556 ,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Mini Presidential", "price": 1936,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Presidential Room", "price": 3090,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Wireless Internet",
@@ -377,11 +377,11 @@
     "hotelType": "Hotel & Spa",
     "listingStatus": true,
     "allowPets": false,
-    "roomsType": [
-      { "name": "Gold Room", "price": 736 },
-      { "name": "Mayor Room", "price": 933 },
-      { "name": "Executive Suite", "price": 1156 },
-      { "name": "Presidential Room", "price": 1390 }
+    "roomTypes": [
+      { "name": "Gold Room", "price": 736,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 933,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Executive Suite", "price": 1156,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Presidential Room", "price": 1390 ,"roomsQuantity":67, "roomsAvailable":33 }
     ],
     "amenities": [
       "Wireless Internet",
@@ -424,11 +424,11 @@
     "hotelType": "Hotel",
     "listingStatus": true,
     "allowPets": true,
-    "roomsType": [
-      { "name": "Standard Room", "price": 76 },
-      { "name": "Mayor Room", "price": 123 },
-      { "name": "Executive Suite", "price": 156 },
-      { "name": "Deluxe Suite", "price": 597 }
+    "roomTypes": [
+      { "name": "Standard Room", "price": 76,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Mayor Room", "price": 123 ,"roomsQuantity":67, "roomsAvailable":33 },
+      { "name": "Executive Suite", "price": 156,"roomsQuantity":67, "roomsAvailable":33  },
+      { "name": "Deluxe Suite", "price": 597,"roomsQuantity":67, "roomsAvailable":33  }
     ],
     "amenities": [
       "Room Service",

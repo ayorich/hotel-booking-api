@@ -19,7 +19,7 @@ router
   
 router
   .route('/:id')
-  .get(hotelController.getHotel)
+  .get(authController.protect, hotelController.getHotel)
   .patch(hotelController.updateHotel)
   .delete(authController.protect, authController.restrictTo('admin', 'sub-admin'), hotelController.deleteHotel);
 module.exports = router;

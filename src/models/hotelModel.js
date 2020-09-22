@@ -3,18 +3,6 @@ const mongoose = require('mongoose');
 const slugify = require('slugify');
 // const validator = require('validator');
 
-const roomSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'A room must have a name'],
-    trim: true,
-  },
-  price: {
-    type: Number,
-    required: [true, 'A room must have a price'],
-  },
-});
-
 const hotelSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -101,7 +89,33 @@ const hotelSchema = new mongoose.Schema({
     default: true,
   },
   amenities: [String],
-  roomsType: [roomSchema],
+  roomTypes: [{
+    name: {
+      type: String,
+      required: [true, 'A room type must have a name'],
+      trim: true,
+    },
+    price: {
+      type: Number,
+      required: [true, 'A room type must have a price'],
+    },
+    roomsQuantity: {
+      type: Number,
+      required: [true, 'A room type must have a total number of rooms'],
+    },
+    roomsAvailable: {
+      type: Number,
+    },
+  
+  }],
+  hotelAdmins: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+    },
+    
+  ]
+
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
