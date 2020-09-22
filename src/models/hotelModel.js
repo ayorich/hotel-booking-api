@@ -55,10 +55,10 @@ const hotelSchema = new mongoose.Schema({
     default: Date.now(),
     select: false, // NOT TO SHOW BY DEFAULT WHEN REQUESTED
   },
-  roomsQuantity: {
-    type: Number,
-    required: [true, 'A hotel must have a total number of rooms'],
-  },
+  // roomsQuantity: {
+  //   type: Number,
+  //   required: [true, 'A hotel must have a total number of rooms'],
+  // },
   roomsAvailable: {
     type: Number,
     required: [true, 'A hotel must have numbers of available rooms'],
@@ -116,6 +116,14 @@ const hotelSchema = new mongoose.Schema({
     
   ]
 
+},
+{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+hotelSchema.virtual('totalRooms').get(function () {
+  return Object.values(this.roomTypes).reduce((total, { roomsQuantity }) => total + roomsQuantity, 0);
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called

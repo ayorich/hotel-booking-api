@@ -6,7 +6,6 @@
     "es6": true,
     "mocha": true
   },
-
   "rules": {
     "no-var": "warn",
     "max-len": 0,
@@ -18,9 +17,26 @@
     "comma-dangle": 0,
     "import/no-extraneous-dependencies": 0,
     "no-undef": "error",
-    "curly": ["error", "multi-line"],
-    "import/no-unresolved": [2, { "commonjs": true }],
-    "no-shadow": ["error", { "allow": ["req", "res", "err"] }],
+    "curly": [
+      "error",
+      "multi-line"
+    ],
+    "import/no-unresolved": [
+      2,
+      {
+        "commonjs": true
+      }
+    ],
+    "no-shadow": [
+      "error",
+      {
+        "allow": [
+          "req",
+          "res",
+          "err"
+        ]
+      }
+    ],
     "valid-jsdoc": [
       "error",
       {
@@ -40,9 +56,24 @@
         }
       }
     ],
-    "no-trailing-spaces": ["error", { "skipBlankLines": true }],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "no-trailing-spaces": [
+      "error",
+      {
+        "skipBlankLines": true
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "req|res|next|val"
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true
+      }
+    ],
     "no-duplicate-case": "error"
   }
 }
