@@ -49,7 +49,6 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password +active');
 
   if (user) {
-    console.log(user);
     if (!user.active) return next(new AppError('Your Account as been deactivated. Please do contact support'));
   } else {
     return next(new AppError('Incorrect email or password', 401));
