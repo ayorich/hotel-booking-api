@@ -143,6 +143,7 @@ hotelSchema.pre('save', function (next) {
 });
 
 // QUERY MIDDLEWARE: for any route that calls find**
+
 hotelSchema.pre(/^find/, function (next) {
   // hotelSchema.pre('find', function (next) {
   if (this._update) {

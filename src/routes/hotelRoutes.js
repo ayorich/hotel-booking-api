@@ -1,10 +1,13 @@
 const express = require('express');
 const hotelController = require('../controllers/hotelController');
 const authController = require('../controllers/authController');
+const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
 
 // router.param('id', hotelController.checkgID);
+
+router.use('/:hotelId/reviews', reviewRouter);
 
 router
   .route('/top-5-cheap')
