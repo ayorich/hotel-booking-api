@@ -53,12 +53,12 @@ exports.getHotel = catchAsync(async (req, res, next) => {
   let hotel;
 
   if (req.user.role === 'user') {
-    hotel = await Hotel.findById(req.params.id).select('-hotelAdmins');
+    hotel = await Hotel.findById(req.params.id).select('-hotelAdmins').populate('reviews');
   } else {
     hotel = await Hotel.findById(req.params.id).populate({
       path: 'hotelAdmins',
       select: '-__v -passwordChangedAt'
-    });
+    }).populate('reviews');
   }
 
   if (!hotel) {

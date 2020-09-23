@@ -129,6 +129,13 @@ hotelSchema.virtual('totalRooms').get(function () {
   return totalRooms;
 });
 
+// VIRTUAL POPULATE
+hotelSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'hotel',
+  localField: '_id'
+});
+
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
 hotelSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
