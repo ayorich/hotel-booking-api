@@ -38,7 +38,6 @@ const sendErrorProd = (err, res) => {
     // OPERATIONAL, TRUSTED ERROR: SEND MESSAGE TO CLIENT
     res.status(err.statusCode).json({
       status: err.status,
-
       message: err.message,
     });
   } else {

@@ -1,14 +1,17 @@
 const Review = require('../models/reviewModel');
 const catchAsync = require('../utils/catchAsync');
+const factory = require('./handlerFactory');
 
 exports.getAllReviews = catchAsync(async (req, res, next) => {
+  let filter;
+  if (req.params.hotelId) filter = { hotel: req.params.hotelId };
   /**
-   * @todo to check how to restructed this pre query
-   * to aviod double query when called in Hotel and User model
-   * @source from reviewModel.js
-   * @method .populate
-   */
-  const reviews = await Review.find().populate({
+     * @todo to check how to restructed this pre query
+     * to aviod double query when called in Hotel and User model
+     * @source from reviewModel.js
+     * @method .populate
+     */
+  const reviews = await Review.find(filter).populate({
     path: 'hotel',
     select: 'name'
   });
@@ -23,17 +26,14 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createReview = catchAsync(async (req, res, next) => {
+exports.setHotelUserIds = (req, res, next) => {
   // Allow nested routes
   if (!req.body.hotel) req.body.hotel = req.params.hotelId;
   if (!req.body.user) req.body.user = req.user.id;
-  const newReview = await Review.create(req.body);
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      review: newReview
-    }
+  next();
+};
 
-  });
-});
+exports.createReview = factory.createOne(Review);
+exports.updateReview = factory.updateOne(Review);
+exports.deleteReview = factory.deleteOne(Review);

@@ -2,6 +2,7 @@ const Hotel = require('../models/hotelModel');
 const apiFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
+const factory = require('./handlerFactory');
 
 // const hotels = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/hotel-simple.json`));
 
@@ -72,49 +73,9 @@ exports.getHotel = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createHotel = catchAsync(async (req, res, next) => {
-  const newHotel = await Hotel.create(req.body);
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      hotel: newHotel,
-    },
-  });
-});
-
-exports.updateHotel = catchAsync(async (req, res, next) => {
-  const reqBody = Object.keys(req.body).length;
-
-  if (reqBody === 0) throw new Error('update body is empty');
-  // eslint-disable-next-line no-extra-boolean-cast
-  const hotel = await Hotel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!hotel) {
-    return next(new AppError('No hotel found with that ID', 404));
-  }
-
-  res.status(200).json({
-    status: 'Success',
-    data: {
-      hotel,
-    },
-  });
-});
-
-exports.deleteHotel = catchAsync(async (req, res, next) => {
-  const hotel = await Hotel.findByIdAndDelete(req.params.id);
-  if (!hotel) {
-    return next(new AppError('No hotel found with that ID', 404));
-  }
-
-  res.status(204).json({
-    status: 'Success',
-    data: null,
-  });
-});
+exports.createHotel = factory.createOne(Hotel);
+exports.updateHotel = factory.updateOne(Hotel);
+exports.deleteHotel = factory.deleteOne(Hotel);
 
 exports.getHotelStats = catchAsync(async (req, res, next) => {
   const stats = await Hotel.aggregate([

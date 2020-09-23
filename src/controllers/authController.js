@@ -33,7 +33,7 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-  
+
   createSendToken(newUser, 201, res);
 });
 
@@ -50,11 +50,18 @@ exports.login = catchAsync(async (req, res, next) => {
 
   if (user) {
     if (!user.active) return next(new AppError('Your Account as been deactivated. Please do contact support'));
+
+    const isPasswordCorrect = await user.correctPassword(req.body.password, user.password);
+
+    if (!isPasswordCorrect) {
+      return next(new AppError('Incorrect email or password', 401));
+    }
   } else {
     return next(new AppError('Incorrect email or password', 401));
   }
- 
-  // 3. IF EVERYTHING OK, SEND TOKEN TO CLIENT
+  // 3.if password is correct
+
+  // 4. IF EVERYTHING OK, SEND TOKEN TO CLIENT
   createSendToken(user, 200, res);
 });
 
@@ -72,11 +79,11 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 2.VALIDATE TOKEN
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
- 
+
   // 3. CHECK IF USER STILL EXISTS
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) return next(new AppError('The user belonging to this token no longer exist', 401));
-  
+
   // 4.CHECK IF USER CHANGED PASSWORD AFTER THE TOKEN WAS ISSUED
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(new AppError('User recently changed password! Please log in again.', 401));
@@ -95,7 +102,7 @@ exports.restrictTo = (...roles) => (req, res, next) => {
 };
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-// 1.GET USER BASED ON POSTED EMAIL
+  // 1.GET USER BASED ON POSTED EMAIL
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new AppError('There is no user with this email address', 404));
@@ -107,7 +114,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3.SEND IT TO USER'S EMAIL
   const resetURL = `${req.protocol}://${req.get('host')}/api/vi/users/resetPassword/${resetToken}`;
-  
+
   const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email`;
   try {
     await sendEmail({
@@ -115,7 +122,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       subject: 'Your password reset token is only valid for 10mins',
       message
     });
-  
+
     res.status(200).json({
       status: 'success',
       message: 'Token sent to email!'
@@ -130,7 +137,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
-// 1.GET USER BASED ON THE TOKEN
+  // 1.GET USER BASED ON THE TOKEN
   const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
   const user = await User.findOne({
@@ -139,10 +146,10 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 2.IF TOKEN HAS NOT EXPIRED, AND THERE IS USER, SET THE PASSWORD
   if (!user) return next(new AppError('Token is invalid or has expired', 400));
- 
+
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  
+
   // 3.UPDATE CHANGEDPASSWORDAT PROPERTY FOR USER
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
@@ -153,13 +160,16 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
-// 1. Get user from collection
+  // 1. Get user from collection
   const user = await User.findById(req.user.id).select('+password');
-  
+
   // 2.check if POSTed current password is correct
-  if (!user.correctPassword(req.body.passwordCurrent, user.password)) {
+  const isPasswordCorrect = await user.correctPassword(req.body.passwordCurrent, user.password);
+
+  if (!isPasswordCorrect) {
     return next(new AppError('Your current password is wrong.', 401));
   }
+
   // 3.if so, update password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
