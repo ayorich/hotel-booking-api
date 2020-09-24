@@ -26,9 +26,10 @@ exports.limitFields = (query, queryString) => {
 
   if (queryString.fields) {
     const fields = queryString.fields.split(',').join(' ');
+    // console.log(fields);
     queryValue = query.select(fields);
   } else {
-    queryValue = query.select('-__v');
+    queryValue = query.select('-__v ');
   }
   return queryValue;
 };
@@ -45,8 +46,10 @@ exports.pagination = async (query, queryString, Model) => {
   const page = queryString.page * 1 || 1;
   const limit = queryString.limit * 1 || 100;
   const skip = (page - 1) * limit;
+
   if (queryString.page) {
     const numHotel = await Model.countDocuments();
+
     if (skip >= numHotel) throw new Error('This page does not exist');
   }
 

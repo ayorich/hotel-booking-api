@@ -107,14 +107,13 @@ const hotelSchema = new mongoose.Schema({
       type: Number,
     },
 
-  }],
-  hotelAdmins: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-    },
-
-  ]
+  }]
+  // hotelAdmins: [
+  //   {
+  //     type: mongoose.Schema.ObjectId,
+  //     ref: 'User',
+  //   }
+  // ]
 
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 

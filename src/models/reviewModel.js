@@ -34,11 +34,8 @@ const reviewSchema = new mongoose.Schema(
 );
 
 reviewSchema.pre(/^find/, function (next) {
-  // console.log(this._conditions);
   /**
-   * @todo to check how to restructed this pre query
-   * to aviod double query when called in Hotel and User model
-   * @method .populate from reviewController.js
+   * @todo add the hotel field by populate
    */
   this
     .populate({
