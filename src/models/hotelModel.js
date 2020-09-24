@@ -149,15 +149,16 @@ hotelSchema.pre('save', function (next) {
 
 // QUERY MIDDLEWARE: for any route that calls find**
 
-hotelSchema.pre(/^find/, function (next) {
-  // hotelSchema.pre('find', function (next) {
-  if (this._update) {
-    this.find();
-  } else {
-    this.find({ listingStatus: { $ne: false } });
-  }
-  next();
-});
+// hotelSchema.pre(/^find/, function (next) {
+//   // hotelSchema.pre('find', function (next) {
+
+//   if (this._update) {
+//     this.find();
+//   } else {
+//     this.find({ listingStatus: { $ne: false } });
+//   }
+//   next();
+// });
 
 // AGGREGATION MIDDLEWARE : for route /hotel-stats
 hotelSchema.pre('aggregate', function (next) {

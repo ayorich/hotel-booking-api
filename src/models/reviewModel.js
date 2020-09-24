@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
 const mongoose = require('mongoose');
+const Hotel = require('./hotelModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -44,6 +45,50 @@ reviewSchema.pre(/^find/, function (next) {
     });
 
   next();
+});
+
+reviewSchema.statics.calcAverageRatings = async function (hotelId) {
+  const stats = await this.aggregate([
+
+    {
+      $match: { hotel: hotelId }
+    },
+    {
+      $group: {
+        _id: '$hotel',
+        nRating: { $sum: 1 },
+        avgRating: { $avg: '$rating' }
+      }
+    }
+
+  ]);
+
+  if (stats.length > 0) {
+    await Hotel.findByIdAndUpdate(hotelId, {
+      ratingsQuantity: stats[0].nRating,
+      ratingsAverage: stats[0].avgRating
+    });
+  } else {
+    await Hotel.findByIdAndUpdate(hotelId, {
+      ratingsQuantity: 0,
+      ratingsAverage: 3
+    });
+  }
+};
+
+reviewSchema.post('save', function () {
+  this.constructor.calcAverageRatings(this.hotel);
+});
+
+reviewSchema.pre(/^findOneAnd/, async function (next) {
+  this.r = await this.findOne();
+  // console.log(this.r);
+  next();
+});
+
+reviewSchema.post(/^findOneAnd/, async function () {
+  if (!this.r) return;
+  await this.r.constructor.calcAverageRatings(this.r.hotel);
 });
 
 const Review = mongoose.model('Review', reviewSchema);
