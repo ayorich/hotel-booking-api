@@ -117,6 +117,12 @@ const hotelSchema = new mongoose.Schema({
 
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
+// adding index for better query peformance
+// single indexing
+hotelSchema.index({ slug: 1 });
+// compound indexing
+hotelSchema.index({ price: 1, ratingsAverage: -1 });
+
 hotelSchema.virtual('totalRooms').get(function () {
   let totalRooms;
 

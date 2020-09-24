@@ -19,11 +19,19 @@ router
 
 router
   .route('/')
-  .get(authController.protect, hotelController.getAllHotels)
-  .post(hotelController.createHotel);
+  .get(hotelController.getAllHotels)
+  .post(authController.protect,
+    authController.restrictTo('admin', 'superAdmin'),
+    hotelController.createHotel);
 
 router
-  .route('/:id').get(authController.protect, hotelController.getHotel).patch(hotelController.updateHotel).delete(authController.protect, authController.restrictTo('admin', 'sub-admin'),
+  .route('/:id')
+  .get(authController.protect, hotelController.getHotel)
+  .patch(authController.protect,
+    authController.restrictTo('admin', 'superAdmin'),
+    hotelController.updateHotel)
+  .delete(authController.protect,
+    authController.restrictTo('admin', 'superAdmin'),
     hotelController.deleteHotel);
 
 module.exports = router;

@@ -15,12 +15,14 @@ exports.deleteOne = (Model) => catchAsync(async (req, res, next) => {
 });
 
 exports.updateOne = (Model) => catchAsync(async (req, res, next) => {
-  if (req.body.password || req.body.passwordConfirm) {
-    return next(new AppError('This route is not for password updates,Please use /updateMyPassword.', 400));
-  }
   const reqBody = Object.keys(req.body).length;
 
   if (reqBody === 0) throw new Error('update body is empty');
+
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(new AppError('This route is not for password updates,Please use /updateMyPassword.', 400));
+  }
+
   // eslint-disable-next-line no-extra-boolean-cast
   const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

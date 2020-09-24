@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   photo: String,
   role: {
     type: String,
-    enum: ['user', 'hotel-admin', 'sub-admin', 'admin'],
+    enum: ['user', 'hotelAdmin', 'admin', 'superAdmin'],
     default: 'user'
   },
   password: {
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
       validator(el) { return el === this.password; }
     },
     message: 'Password are not the same'
- 
+
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
@@ -53,13 +53,13 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next) {
   // ONLY RUN IF PASSWORD IS ONLY MODIFIED
   if (!this.isModified('password')) return next();
-  
+
   // HASH THE PASSWORD
   this.password = await bcrypt.hash(this.password, 12);
-  
+
   // DELETE THE PASSWORDCONFIRM
   this.passwordConfirm = undefined;
-  
+
   next();
 });
 
@@ -78,11 +78,11 @@ userSchema.methods.correctPassword = async (candidatePassword, userPassword) => 
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
-    
+
     // return true if passwordChanged(on 12th-sept-2020) after JWTToken is issued(on 11th-sept-2020)
     return JWTTimestamp < changedTimestamp;
   }
-  
+
   return false;
 };
 
