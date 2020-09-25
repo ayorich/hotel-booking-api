@@ -24,10 +24,6 @@ const hotelSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  price: {
-    type: Number,
-    required: [true, 'A hotel must have an average price'],
-  },
   priceDiscount: {
     type: Number,
     // DOESNOT WORK FOR UPDATE QUERY
@@ -56,14 +52,11 @@ const hotelSchema = new mongoose.Schema({
     default: Date.now(),
     select: false, // NOT TO SHOW BY DEFAULT WHEN REQUESTED
   },
-  // roomsQuantity: {
-  //   type: Number,
-  //   required: [true, 'A hotel must have a total number of rooms'],
-  // },
-  roomsAvailable: {
+  roomsQuantity: {
     type: Number,
-    required: [true, 'A hotel must have numbers of available rooms'],
+    required: [true, 'A hotel must have a total number of rooms'],
   },
+
   location: {
     // GeoJSON
     type: {
@@ -126,22 +119,14 @@ hotelSchema.index({ location: '2dsphere' });
 // compound indexing
 hotelSchema.index({ price: 1, ratingsAverage: -1 });
 
-hotelSchema.virtual('totalRooms').get(function () {
-  let totalRooms;
+hotelSchema.virtual('startingPrice').get(function () {
+  let minPrice;
 
   if (this.roomTypes) {
-    totalRooms = Object.values(this.roomTypes)
-      .reduce((total, { roomsQuantity }) => total + roomsQuantity, 0);
+    minPrice = this.roomTypes.map((el) => el.price)
+      .reduce((a, b) => Math.min(a, b));
   }
-
-  return totalRooms;
-});
-
-// VIRTUAL POPULATE
-hotelSchema.virtual('reviews', {
-  ref: 'Review',
-  foreignField: 'hotel',
-  localField: '_id'
+  return minPrice;
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
@@ -166,7 +151,6 @@ hotelSchema.pre('save', function (next) {
 // AGGREGATION MIDDLEWARE : for route /hotel-stats
 hotelSchema.pre('aggregate', function (next) {
   const pipelineStartOperator = Object.keys(this.pipeline()[0])[0];
-  // this.pipeline().unshift({ $match: { listingStatus: { $ne: false } } });
 
   if (pipelineStartOperator !== '$geoNear') {
     this.pipeline().unshift({ $match: { listingStatus: { $ne: false } } });
