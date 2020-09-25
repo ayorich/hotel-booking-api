@@ -24,7 +24,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     return next(new AppError('This route is not for password updates,Please use /updateMyPassword.', 400));
   }
   // 2. filtered out unwanted fieldNames not allowed to update
-  const filteredBody = filterObj(req.body, 'name', 'email');
+  const filteredBody = filterObj(req.body, 'name', 'email', 'photo');
 
   // 3.Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true });
@@ -52,6 +52,23 @@ exports.createUser = (req, res) => {
     message: 'this route is not defined. Please use /signup instead',
   });
 };
+
+exports.activateUser = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return next(new AppError('Please provide an email ', 400));
+  }
+
+  const doc = await User.findOneAndUpdate({ email }, { active: true });
+
+  if (!doc) return next(new AppError('User does not exist'));
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Account successfully activated'
+  });
+});
 
 exports.getAllUsers = factory.getAll(User);
 exports.getUser = factory.getOne(User);

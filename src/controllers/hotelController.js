@@ -80,13 +80,50 @@ exports.getHotelsNearby = catchAsync(async (req, res, next) => {
   const hotels = await Hotel.find({
     location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });
-  console.log(distance, lat, lng, unit);
 
   res.status(200).json({
     status: 'success',
     results: hotels.length,
     data: {
       data: hotels
+    }
+  });
+});
+
+exports.getDistances = catchAsync(async (req, res, next) => {
+  const { latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+  // convert distancefield value form meter to miles 1meter =0.000621371miles
+  const multiplier = unit === 'mi' ? 0.000621371 : 0.001;
+
+  if (!lat || !lng) {
+    next(new AppError('Please provide latitude and longitude in the format lat,lng.', 400));
+  }
+
+  const distances = await Hotel.aggregate([
+
+    {
+      $geoNear: {
+        near: {
+          type: 'Point',
+          coordinates: [lng * 1, lat * 1]
+        },
+        distanceField: 'distance',
+        distanceMultiplier: multiplier
+      }
+    },
+    {
+      $project: {
+        distance: 1,
+        name: 1
+      }
+    }
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: distances
     }
   });
 });

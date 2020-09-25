@@ -165,7 +165,13 @@ hotelSchema.pre('save', function (next) {
 
 // AGGREGATION MIDDLEWARE : for route /hotel-stats
 hotelSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { listingStatus: { $ne: false } } });
+  const pipelineStartOperator = Object.keys(this.pipeline()[0])[0];
+  // this.pipeline().unshift({ $match: { listingStatus: { $ne: false } } });
+
+  if (pipelineStartOperator !== '$geoNear') {
+    this.pipeline().unshift({ $match: { listingStatus: { $ne: false } } });
+  }
+
   next();
 });
 

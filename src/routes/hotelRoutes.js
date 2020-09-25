@@ -20,6 +20,9 @@ router
 router
   .route('/hotels-nearby/:distance/center/:latlng/unit/:unit')
   .get(hotelController.getHotelsNearby);
+router
+  .route('/distances/:latlng/unit/:unit')
+  .get(hotelController.getDistances);
 
 router
   .route('/')
