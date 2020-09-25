@@ -18,6 +18,7 @@ const hotelSchema = new mongoose.Schema({
     default: 3.0,
     min: [1, 'Rating must be above 1.0'],
     max: [5, 'Rating must be below 5.0'],
+    set: (val) => Math.round(val * 10) / 10 // 3.66666=>36.666=>37=>3.7
   },
   ratingsQuantity: {
     type: Number,
@@ -63,18 +64,19 @@ const hotelSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'A hotel must have numbers of available rooms'],
   },
-  address: {
-    type: String,
-    required: [true, 'A hotel must have an address'],
+  location: {
+    // GeoJSON
+    type: {
+      type: String,
+      default: 'Point',
+      enum: ['Point']
+    },
+    coordinates: [Number],
+    address: String,
+    city: String,
+    state: String
   },
-  city: {
-    type: String,
-    required: [true, 'A hotel must have an city'],
-  },
-  state: {
-    type: String,
-    required: [true, 'A hotel must have an state'],
-  },
+
   hotelType: {
     type: String,
     default: 'Hotel',
@@ -120,6 +122,7 @@ const hotelSchema = new mongoose.Schema({
 // adding index for better query peformance
 // single indexing
 hotelSchema.index({ slug: 1 });
+hotelSchema.index({ location: '2dsphere' });
 // compound indexing
 hotelSchema.index({ price: 1, ratingsAverage: -1 });
 

@@ -18,6 +18,10 @@ router
   .get(hotelController.getHotelStats);
 
 router
+  .route('/hotels-nearby/:distance/center/:latlng/unit/:unit')
+  .get(hotelController.getHotelsNearby);
+
+router
   .route('/')
   .get(hotelController.getAllHotels)
   .post(authController.protect,

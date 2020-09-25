@@ -34,6 +34,8 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+reviewSchema.index({ hotel: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function (next) {
   /**
    * @todo add the hotel field by populate
