@@ -95,7 +95,6 @@ exports.updateUserRestrictions = catchAsync(async (req, res, next) => {
   // 5. as filteredbody to req.body
   req.body = filteredBody;
   req.body.updatedByAdmin = req.user._id;
-  console.log(req.body.updatedByAdmin);
 
   next();
 });

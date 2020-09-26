@@ -103,12 +103,6 @@ const hotelSchema = new mongoose.Schema({
     },
 
   }]
-  // hotelAdmins: [
-  //   {
-  //     type: mongoose.Schema.ObjectId,
-  //     ref: 'User',
-  //   }
-  // ]
 
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
@@ -127,6 +121,13 @@ hotelSchema.virtual('startingPrice').get(function () {
       .reduce((a, b) => Math.min(a, b));
   }
   return minPrice;
+});
+
+// VIRTUAL POPULATE
+hotelSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'hotel',
+  localField: '_id'
 });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create() is called
