@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
+const { SUPER_ADMIN, ADMIN } = require('../constants/roles');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -70,7 +71,35 @@ exports.activateUser = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.updateUserRestrictions = catchAsync(async (req, res, next) => {
+  // 1. if user from req.params.id is superAdmin throw error
+  const isSuperAdmin = (await User.findById(req.params.id)).role;
+  const isNotAllowed = [SUPER_ADMIN, ADMIN].includes(req.body.role);
+
+  // 2. stops superadmin from updating self
+  if (isSuperAdmin === SUPER_ADMIN && req.user.role === SUPER_ADMIN) {
+    return next(new AppError('Route not defined. make use of /updateMe ', 400));
+  }
+  if (req.user.role === SUPER_ADMIN && req.body.role === SUPER_ADMIN) {
+    return next(new AppError('Only one Super Admin is allowed', 403));
+  }
+
+  // 3.if not super admin throw errors
+  if (isSuperAdmin === SUPER_ADMIN || (isNotAllowed && req.user.role !== SUPER_ADMIN)) {
+    return next(new AppError('You do not have permission. Please contact the administrator', 401));
+  }
+
+  // 4.filter body to allow only role and active status
+  const filteredBody = filterObj(req.body, 'role', 'active');
+
+  // 5. as filteredbody to req.body
+  req.body = filteredBody;
+  req.body.lastUpdatedById = req.user._id;
+
+  next();
+});
+
 exports.getAllUsers = factory.getAll(User);
-exports.getUser = factory.getOne(User);
+exports.getUser = factory.getOne(User, { path: 'lastUpdatedById' });
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);

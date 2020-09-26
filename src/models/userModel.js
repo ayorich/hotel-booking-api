@@ -47,7 +47,11 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
-  }
+  },
+  lastUpdatedById: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+  },
 });
 
 userSchema.pre('save', async function (next) {

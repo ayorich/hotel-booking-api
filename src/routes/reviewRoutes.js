@@ -1,6 +1,7 @@
 const express = require('express');
 const reviewController = require('../controllers/reviewController');
 const authController = require('../controllers/authController');
+const { SUPER_ADMIN, USER } = require('../constants/roles');
 
 const router = express.Router({ mergeParams: true });
 
@@ -13,7 +14,7 @@ router
   .route('/')
   .get(reviewController.getAllReviews)
   .post(
-    authController.restrictTo('user'),
+    authController.restrictTo(USER),
     reviewController.setHotelUserIds,
     reviewController.createReview
   );
@@ -21,7 +22,7 @@ router
 router
   .route('/:id')
   .get(reviewController.getReview)
-  .patch(authController.restrictTo('user', ' superAdmin'), reviewController.updateReview)
-  .delete(authController.restrictTo('user', ' superAdmin'), reviewController.deleteReview);
+  .patch(authController.restrictTo(USER, SUPER_ADMIN), reviewController.updateReview)
+  .delete(authController.restrictTo(USER, SUPER_ADMIN), reviewController.deleteReview);
 
 module.exports = router;

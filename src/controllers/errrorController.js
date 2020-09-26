@@ -63,20 +63,20 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
-    console.error('prod', error);
-    
+    // console.error('prod', error);
+
     // ERROR FOR UNKOWN ID
-    if (error.kind === 'ObjectId')error = handleCastErrorDB(error);
+    if (error.kind === 'ObjectId') error = handleCastErrorDB(error);
 
     // ERROR FOR DUPLICATE FIELDS
-    if (error.code === 11000)error = handleDuplicateFieldsDB(error);
-    
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+
     // ERROR FOR BAD TOKEN
-    if (error.name === 'JsonWebTokenError')error = handleJWTError();
-    
+    if (error.name === 'JsonWebTokenError') error = handleJWTError();
+
     // ERROR FOR EXPIRED TOKEN
-    if (error.name === 'TokenExpiredError')error = handleJWTExpiredError();
-    
+    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+
     // ERROR FOR MONGOOSE VALIDATION
     /**
      * @todo to find a more reliable way to check for mongoose validation error in the future
@@ -87,7 +87,7 @@ module.exports = (err, req, res, next) => {
     //   errorCheck = error._message.split(' ').includes('validation');
     // }
     // if (errorCheck) error = handleValidationErrorDB(error);
-    
+
     sendErrorProd(error, res);
   }
 };

@@ -2,6 +2,7 @@ const express = require('express');
 const hotelController = require('../controllers/hotelController');
 const authController = require('../controllers/authController');
 const reviewRouter = require('./reviewRoutes');
+const { SUPER_ADMIN, ADMIN } = require('../constants/roles');
 
 const router = express.Router();
 
@@ -28,17 +29,17 @@ router
   .route('/')
   .get(hotelController.getAllHotels)
   .post(authController.protect,
-    authController.restrictTo('admin', 'superAdmin'),
+    authController.restrictTo(ADMIN, SUPER_ADMIN),
     hotelController.createHotel);
 
 router
   .route('/:id')
   .get(authController.protect, hotelController.getHotel)
   .patch(authController.protect,
-    authController.restrictTo('admin', 'superAdmin'),
+    authController.restrictTo(ADMIN, SUPER_ADMIN),
     hotelController.updateHotel)
   .delete(authController.protect,
-    authController.restrictTo('admin', 'superAdmin'),
+    authController.restrictTo(ADMIN, SUPER_ADMIN),
     hotelController.deleteHotel);
 
 module.exports = router;

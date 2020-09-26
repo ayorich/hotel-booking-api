@@ -8,6 +8,7 @@
   },
   "rules": {
     // "indent": 0,
+    "no-underscore-dangle": 0,
     "no-var": "warn",
     "max-len": 0,
     "one-var-declaration-per-line": 0,
@@ -67,12 +68,6 @@
       "error",
       {
         "argsIgnorePattern": "req|res|next|val"
-      }
-    ],
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allowAfterThis": true
       }
     ],
     "no-duplicate-case": "error"

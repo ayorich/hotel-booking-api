@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const { SUPER_ADMIN, ADMIN } = require('../constants/roles');
 
 const router = express.Router();
 
@@ -20,18 +21,22 @@ router.get('/me', userController.getMe, userController.getUser);
 router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 router.patch('/activateUser',
-  authController.restrictTo('admin', 'superAdmin'),
+  authController.restrictTo(ADMIN, SUPER_ADMIN),
   userController.activateUser);
 
 router
   .route('/')
-  .get(authController.restrictTo('admin', 'superAdmin'), userController.getAllUsers)
-  .post(authController.restrictTo('superAdmin'), userController.createUser);
+  .get(authController.restrictTo(ADMIN, SUPER_ADMIN), userController.getAllUsers)
+  .post(authController.restrictTo(SUPER_ADMIN), userController.createUser);
 
 router
   .route('/:id')
-  .get(authController.restrictTo('admin', 'superAdmin'), userController.getUser)
-  .patch(authController.restrictTo('superAdmin'), userController.updateUser)
-  .delete(authController.restrictTo('superAdmin'), userController.deleteUser);
+  .get(authController.restrictTo(ADMIN, SUPER_ADMIN), userController.getUser)
+  .patch(
+    authController.restrictTo(ADMIN, SUPER_ADMIN),
+    userController.updateUserRestrictions,
+    userController.updateUser
+  )
+  .delete(authController.restrictTo(SUPER_ADMIN), userController.deleteUser);
 
 module.exports = router;
