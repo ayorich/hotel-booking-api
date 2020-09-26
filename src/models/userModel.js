@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false
   },
-  lastUpdatedById: {
+  updatedByAdmin: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
   },

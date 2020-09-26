@@ -61,7 +61,7 @@ exports.activateUser = catchAsync(async (req, res, next) => {
     return next(new AppError('Please provide an email ', 400));
   }
 
-  const doc = await User.findOneAndUpdate({ email }, { active: true });
+  const doc = await User.findOneAndUpdate({ email }, { active: true, updatedByAdmin: req.user._id });
 
   if (!doc) return next(new AppError('User does not exist'));
 
@@ -94,12 +94,13 @@ exports.updateUserRestrictions = catchAsync(async (req, res, next) => {
 
   // 5. as filteredbody to req.body
   req.body = filteredBody;
-  req.body.lastUpdatedById = req.user._id;
+  req.body.updatedByAdmin = req.user._id;
+  console.log(req.body.updatedByAdmin);
 
   next();
 });
 
 exports.getAllUsers = factory.getAll(User);
-exports.getUser = factory.getOne(User, { path: 'lastUpdatedById' });
+exports.getUser = factory.getOne(User, { path: 'updatedByAdmin' });
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
