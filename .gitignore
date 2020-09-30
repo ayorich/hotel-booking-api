@@ -1,5 +1,5 @@
 /node_modules
-/public
+/public-dev
 /dev-data/img
 /dev-data/templates
 config.env
