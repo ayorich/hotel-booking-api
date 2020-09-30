@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controllers/errrorController');
 const hotelRouter = require('./routes/hotelRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 app.set('view engine', 'pug');
@@ -63,12 +64,7 @@ app.use((req, res, next) => {
 });
 
 // 2) ROUTES
-app.get('/', (req, res) => {
-  res.status(200).render('base', {
-    hotel: 'hotel start'
-  });
-});
-
+app.use('/', viewRouter);
 app.use('/api/v1/hotels', hotelRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);

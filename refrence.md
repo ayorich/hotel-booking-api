@@ -31,3 +31,7 @@ Hotels ------ rooms ===> 1:many embedding
 users ------ reviews ===> 1:many parent-referencing
 
 users ------ bookings ===> 1:many parent-referencing
+
+
+//HTML => PUG CONVERTER
+https://pughtml.com/

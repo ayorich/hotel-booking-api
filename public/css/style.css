@@ -1,16 +1,4 @@
-:root {
-  --section-rotate: 9vw;
-}
 
-::-moz-selection {
-  background-color: #55c57a;
-  color: #fff;
-}
-
-::selection {
-  background-color: #55c57a;
-  color: #fff;
-}
 
 *,
 *::before,
@@ -41,4 +29,49 @@ body {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+.logo{
+  width: 35px;
+  height: 35px;
+
+}
+.logo img{
+  width: 100%;
+  height: 100%;
+}
+
+.main-content{
+  padding: 5rem 6rem;
+  background-color: #f7f7f7;
+}
+.main-card{
+  margin: 3rem 2rem;
+  padding: 0px;
+  box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+  0 12.5px 10px rgba(0, 0, 0, 0.06),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+  0 100px 80px rgba(0, 0, 0, 0.12)
+
+}
+.img-card{
+    height: 250px;
+  }
+
+.img-card img{
+  height: 100%;
+  width: 100%;
+}
+.card-detail{
+  font-size: 16px;
+}
+.card-detail i{
+  color: blue;
+  font-size: 22px;
+}
+
+.card-action a{
+  font-size: 18px;
 }

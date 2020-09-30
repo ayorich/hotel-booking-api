@@ -1,0 +1,29 @@
+extends base
+
+block content
+  .main-content
+    .content
+      .row
+        each hotel in hotels
+          .col-md-6.col-xl-4
+            .card.main-card 
+              .img-card
+                img.card-img-top(src=`img/${hotel.imageCover}`, alt=`${hotel.name}`)
+              .card-body.p-5
+                h2.card-title=hotel.name
+                h4.card-text.mb-5=hotel.summary
+                .card-detail.mb-2
+                  i.fa.fa-map-marker(aria-hidden='true')
+                  p.d-inline-block.ml-3=`${hotel.location.city}, ${hotel.location.state}`
+                .card-detail.mb-2
+                  i.fa.fa-star-o(aria-hidden='true')
+                  p.d-inline-block.ml-3=`${hotel.ratingsAverage} ratings (${hotel.ratingsQuantity})`
+                .card-detail.mb-2
+                  i.fa.fa-money(aria-hidden='true')
+                  p.d-inline-block.ml-3=`₦${hotel.roomTypes.map((el) => el.price).reduce((a, b) => Math.min(a, b)).toLocaleString()} Starting Price`
+                .card-action.mt-2
+                  a.btn.btn-primary.btn-lg.btn-block(href=`/hotels/${hotel.slug}`) Book Now
+
+        
+        
+

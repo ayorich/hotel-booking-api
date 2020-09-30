@@ -4,8 +4,8 @@ const HOTEL_ADMIN = 'hotelAdmin';
 const USER = 'user';
 
 module.exports = {
-    SUPER_ADMIN,
-    ADMIN,
-    HOTEL_ADMIN,
-    USER
+  SUPER_ADMIN,
+  ADMIN,
+  HOTEL_ADMIN,
+  USER
 };
