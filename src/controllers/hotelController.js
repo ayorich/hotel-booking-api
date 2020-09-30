@@ -19,6 +19,11 @@ exports.createHotel = factory.createOne(Hotel);
 exports.updateHotel = factory.updateOne(Hotel);
 exports.deleteHotel = factory.deleteOne(Hotel);
 
+exports.hotelAdmin = (req, res, next) => {
+  req.params.id = req.user.hotel;
+  next();
+};
+
 exports.getHotelStats = catchAsync(async (req, res, next) => {
   const stats = await Hotel.aggregate([
     {

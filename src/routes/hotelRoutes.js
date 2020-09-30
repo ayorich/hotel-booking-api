@@ -2,13 +2,14 @@ const express = require('express');
 const hotelController = require('../controllers/hotelController');
 const authController = require('../controllers/authController');
 const reviewRouter = require('./reviewRoutes');
-const { SUPER_ADMIN, ADMIN } = require('../constants/roles');
+const { SUPER_ADMIN, ADMIN, HOTEL_ADMIN } = require('../constants/roles');
 
 const router = express.Router();
 
 // router.param('id', hotelController.checkgID);
 
 router.use('/:hotelId/reviews', reviewRouter);
+// router.use('/:hotelId/admins', userRouter);
 
 router
   .route('/top-5-cheap')
@@ -24,6 +25,12 @@ router
 router
   .route('/distances/:latlng/unit/:unit')
   .get(hotelController.getDistances);
+
+router.patch('/hoteladmin-update-hotel',
+  authController.protect,
+  authController.restrictTo(HOTEL_ADMIN),
+  hotelController.hotelAdmin,
+  hotelController.updateHotel);
 
 router
   .route('/')

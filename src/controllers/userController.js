@@ -2,7 +2,7 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
-const { SUPER_ADMIN, ADMIN } = require('../constants/roles');
+const { SUPER_ADMIN, ADMIN, HOTEL_ADMIN } = require('../constants/roles');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -72,6 +72,9 @@ exports.activateUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUserRestrictions = catchAsync(async (req, res, next) => {
+  if (req.body.role === HOTEL_ADMIN && !req.body.hotel) {
+    return next(new AppError('hotel admin must be associated with a hotel', 400));
+  }
   // 1. if user from req.params.id is superAdmin throw error
   const isSuperAdmin = (await User.findById(req.params.id)).role;
   const isNotAllowed = [SUPER_ADMIN, ADMIN].includes(req.body.role);
