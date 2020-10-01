@@ -1,134 +1,64 @@
 extends base
+include _hotelBookingCard
 
+mixin reviews(testimony)
+    .col-md-4.my-5
+      .text-center
+        h4.my-4=testimony.user.name
+        p.my-4=testimony.review
+        each star in [1, 2, 3, 4, 5]
+          i.fa.fa-star-o(aria-hidden='true' ,class=`testimonial-${testimony.rating >= star ? 'active' : 'inactive'}`)
+        
 block content
   .main-content
     .row
       .col-md-8.my-2
-        h1.text-primary Hotel de spa and treat espaninessee
+        h1.text-primary=hotel.name
         .hotel-location
           i.fa.fa-map-marker(aria-hidden='true')
-          p.d-inline-block.ml-3 no 20 chief smart obi street
+          p.d-inline-block.ml-3=hotel.location.address
       .col-md-4.my-2
         .d-flex.align-items-center
-            .d-inline-block.badge.badge-primary.mr-3.hotel-preview-badge.p-3 4.5
+            .d-inline-block.badge.badge-primary.mr-3.hotel-preview-badge.p-3=hotel.ratingsAverage
             .d-inline-block
               .p.hotel-preview-text-1 Excellent
-              a.hotel-preview-text-2(href=`#`) Based on 10 Guest Reviews
+              a.hotel-preview-text-2(href=`#`)=`Based on ${hotel.ratingsQuantity} Guest Reviews` 
     .row.my-5
-      .col-md-4.hotel-hero-img.my-2
-        img.card-img-top(src='/img/hotel-2-cover.jpg', alt='`${hotel.name}`')
-      .col-md-4.hotel-hero-img.my-2
-        img.card-img-top(src=`/img/hotel-2-cover.jpg`, alt='`${hotel.name}`')
-      .col-md-4.hotel-hero-img.my-2
-        img.card-img-top(src=`/img/hotel-2-cover.jpg`, alt='`${hotel.name}`')
+      each image in hotel.images
+        .col-md-4.hotel-hero-img.my-2
+          img.card-img-top(src=`/img/${image}`, alt=`${hotel.name}`)
+ 
     .row
-      .col-md-6.hotel-detail
+      .col-md-8.hotel-detail
         h2.m-4.text-center.hotel-detail-heading='Amenities'.toUpperCase()
         .row.hotel-amenities
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-          .col-6.col-sm-4
-            i.fa.fa-check-square-o(aria-hidden='true')
-            p.d-inline-block.hotel-amenities-text SECURITY
-      .col-md-6.hotel-detail
+          each service in hotel.amenities
+            .col-6.col-sm-4
+              i.fa.fa-check-square-o(aria-hidden='true')
+              p.d-inline-block.hotel-amenities-text=service
+      .col-md-4.hotel-detail
         .hotel-detail-right
-          h2.m-4.text-center.hotel-detail-heading='About Hotel de spa and treat'.toUpperCase()
-          p.m-3.hotel-detail-text Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          h2.m-4.hotel-detail-heading=`About ${hotel.name}`.toUpperCase()
+          p.m-3.hotel-detail-text=hotel.description
+    
     .row.justify-content-center.my-5
       .col-md-6.my-3
         h2.m-4.mb-5.text-center.hotel-detail-heading='BOOK NOW'.toUpperCase()
-        .hotel-booking
-          .row  
-            .col-4.hotel-booking-img
-              img.card-img-top(src='/img/hotel-2-cover.jpg', alt='`${hotel.name}`')
-            .col-4.p-4
-              h3.my-2 DELUXE SUITE
-              .hotel-booking-text.my-2.mt-4
-                i.fa.fa-money(aria-hidden='true')
-                P.d-inline-block.ml-3 50000 per room
-              .hotel-booking-text.my-2
-                i.fa.fa-bed(aria-hidden='true')
-                P.d-inline-block.ml-3 500 available rooms
-            .col-4.d-flex
-              button.align-self-end.btn.btn-primary.m-3.mr-4(type='button') BOOK NOW
-
-        .hotel-booking
-          .row  
-            .col-4.hotel-booking-img
-              img.card-img-top(src='/img/hotel-2-cover.jpg', alt='`${hotel.name}`')
-            .col-4.p-4
-              h3.my-2 DELUXE SUITE
-              .hotel-booking-text.my-2.mt-4
-                i.fa.fa-money(aria-hidden='true')
-                P.d-inline-block.ml-3 50000 per room
-              .hotel-booking-text.my-2
-                i.fa.fa-bed(aria-hidden='true')
-                P.d-inline-block.ml-3 500 available rooms
-            .col-4.d-flex
-              button.align-self-end.btn.btn-primary.m-3.mr-4(type='button') BOOK NOW
+        each suite in hotel.roomTypes
+          +hotelBookinCard(suite)
+          
     .row.testimonial
       .col-12.my-3
         h2.text-center REVIEWS
-      .col-md-4.my-5
-        .text-center
-          h4.my-4 John Doe
-          p.my-4 Some example text ome example text ome example textome example textome example ome example textome example textome example text.
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-      .col-4.my-5
-        .text-center
-          h4.my-4 John Doe
-          p.my-4 Some example text ome example text ome example textome example textome example ome example textome example textome example text.
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-      .col-4.my-5
-        .text-center
-          h4.my-4 John Doe
-          p.my-4 Some example text ome example text ome example textome example textome example ome example textome example textome example text.
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-      .col-4.my-5
-        .text-center
-          h4.my-4 John Doe
-          p.my-4 Some example text ome example text ome example textome example textome example ome example textome example textome example text.
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-      .col-4.my-5
-        .text-center
-          h4.my-4 John Doe
-          p.my-4 Some example text ome example text ome example textome example textome example ome example textome example textome example text.
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-      .col-4.my-5
-        .text-center
-          h4.my-4 John Doe
-          p.my-4 Some example text ome example text ome example textome example textome example ome example textome example textome example text.
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
-          i.fa.fa-star-o(aria-hidden='true')
+      each testimony,i in hotel.reviews.slice(0, 6)
+        +reviews(testimony)
+      
+      -let total;
+      each x,i in hotel.reviews
+        -total=i+1
       .col-12.my-5.d-flex.flex-row-reverse
-        a.align-self-end(href=`#`)  see all reviews
+        a.align-self-end(href=`#`)=`${total > 6? 'see all reviews': ''}`
+          
 
 
       
