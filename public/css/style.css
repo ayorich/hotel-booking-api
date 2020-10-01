@@ -131,3 +131,64 @@ body {
   font-size: 14px;
   color: #007bff;
 }
+.hotel-booking{
+  border: 1px solid #777;
+  background-color: #fff;
+  /* height: 150px; */
+  overflow: hidden;
+  margin: 15px;
+}
+.hotel-booking h3{
+  color: #007bff;
+
+}
+.hotel-booking-img{
+  height: 180px;
+}
+.hotel-booking-img img{
+  width: 100%;
+  height:  100%;
+}
+.hotel-booking-text{
+  font-size: 14px;
+}
+.hotel-booking button{
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.hotel-booking i{
+  color: #007bff;
+  
+}
+.testimonial{
+  margin-top: 100px 20px 60px;
+}
+
+.testimonial h2{
+  color: #007bff;
+
+}
+
+.testimonial h4{
+  color: #000000;
+  font-size: 20px;
+
+}
+.testimonial p{
+  font-size: 16px;
+
+}
+
+.testimonial i{
+  font-size: 20px;
+margin-left: 10px;
+color: #007bff;
+
+}
+
+.testimonial a{
+  font-size: 16px;
+
+}
