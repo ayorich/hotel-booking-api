@@ -68,10 +68,66 @@ body {
   font-size: 16px;
 }
 .card-detail i{
-  color: blue;
+  color: #007bff;
   font-size: 22px;
 }
 
 .card-action a{
   font-size: 18px;
+}
+
+
+/* --------------hotel style------------ */
+.hotel-preview-badge{
+  font-size: 20px;
+}
+.hotel-preview-text-1{
+  font-size: 18px;
+}
+.hotel-preview-text-2{
+  font-size: 16px;
+}
+.hotel-location{
+  font-size: 16px;
+}
+.hotel-location i{
+  font-size: 18px;
+  color: #007bff;
+}
+
+.hotel-hero-img{
+  height: 300px;
+}
+
+.hotel-hero-img img{
+  height: 100%;
+  width: 100%;
+}
+.hotel-detail{
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+}
+.hotel-detail-right{
+  margin-left: 5rem;
+}
+.hotel-detail-heading{
+  color: #007bff;
+}
+.hotel-detail-text{
+  font-size: 16px;
+}
+.hotel-amenities{
+  background-color: #fff;
+  padding: 3rem;
+  margin: 3rem ;
+  border-radius: 10px;
+  color: #000;
+}
+.hotel-amenities-text{
+  font-size: 14px;
+  padding: 1rem;
+}
+.hotel-amenities i{
+  font-size: 14px;
+  color: #007bff;
 }
