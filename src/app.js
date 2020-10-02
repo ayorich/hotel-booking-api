@@ -4,8 +4,10 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 // const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-// const hpp = require('hpp');
-// const xss = require('xss-clean');
+const hpp = require('hpp');
+const xss = require('xss-clean');
+const cors = require('cors');
+
 const compression = require('compression');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errrorController');
@@ -19,6 +21,10 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+// implement CORS
+app.use(cors());
+app.options('*', cors());
+
 // Serving static files
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -46,14 +52,14 @@ app.use(express.json({ limit: '10kb' }));
 app.use(mongoSanitize());
 
 // Data sanitization against XSS
-// app.use(xss());
+app.use(xss());
 
 // prevent parameter pollution and use whitelist to add double query params
-// app.use(hpp({
-//   whitelist: [
-//     'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
-//   ]
-// }));
+app.use(hpp({
+  whitelist: [
+    'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
+  ]
+}));
 
 app.use(compression());
 // test middleware
