@@ -9,7 +9,7 @@ export const login = async (email, password) => {
     }
     try {
         const response = await axios({
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
             url: '/api/v1/hotels',
             data: data,
             // headers: {
@@ -20,6 +20,7 @@ export const login = async (email, password) => {
 
         })
         console.log(response)
+        alert(`Still in progress, ${email}, ${password}`)
         return response;
 
 
