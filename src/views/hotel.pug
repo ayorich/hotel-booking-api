@@ -50,7 +50,7 @@ block content
     .row.testimonial
       .col-12.my-3
         h2.text-center REVIEWS
-      each testimony,i in hotel.reviews.slice(0, 6)
+      each testimony in hotel.reviews.slice(0, 6)
         +reviews(testimony)
       
       -let total;

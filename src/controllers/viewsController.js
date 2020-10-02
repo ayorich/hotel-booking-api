@@ -1,7 +1,7 @@
 const Hotel = require('../models/hotelModel');
 const catchAsync = require('../utils/catchAsync');
 
-exports.getOverview = catchAsync(async (req, res) => {
+exports.getOverview = catchAsync(async (req, res, next) => {
     // 1.get hotel data from collection
     const hotels = await Hotel.find();
     // 2.build template
@@ -14,7 +14,7 @@ exports.getOverview = catchAsync(async (req, res) => {
     });
 });
 
-exports.getHotel = catchAsync(async (req, res) => {
+exports.getHotel = catchAsync(async (req, res, next) => {
     // 1. get data from collection
     const hotel = await Hotel.findOne({ slug: req.params.slug }).populate({
         path: 'reviews',
@@ -26,3 +26,9 @@ exports.getHotel = catchAsync(async (req, res) => {
         hotel
     });
 });
+
+exports.getLoginForm = (req, res, next) => {
+    res.status(200).render('login', {
+        title: 'Log into your account'
+    });
+};

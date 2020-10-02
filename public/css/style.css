@@ -195,3 +195,49 @@ margin-left: 10px;
   font-size: 16px;
 
 }
+
+
+
+/* ----------login style------- */
+
+.form-container{
+  background-color: #f7f7f7;
+padding: 30px;
+}
+.form{
+  /* border: 1px solid #007bff; */
+  font-size: 18px;
+  background-color: #fff;
+  padding:30px 40px;
+  margin: 40px 0px;
+  border-radius: 5px;
+  box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+  0 12.5px 10px rgba(0, 0, 0, 0.06),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+  0 100px 80px rgba(0, 0, 0, 0.12)
+
+}
+.form-group{
+  margin: 25px 1px;
+}
+.form-control{
+  font-size: 16px;
+
+}
+.form-title{
+  color: #007bff;
+  font-weight:400
+}
+.form i{
+  color: #007bff;
+  font-size: 42px;
+}
+.form button{
+  width: 100%;
+  font-size: 18px;
+  margin: 15px 1px;
+
+}
