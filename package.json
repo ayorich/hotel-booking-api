@@ -4,7 +4,8 @@
   "description": "hotel booking api",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/server.js",
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js",
     "start:prod": "NODE_ENV=production nodemon ./src/server.js",
     "lint": "node_modules/.bin/eslint --fix src/**/*.js",
     "debug": "ndb ./src/server.js",
@@ -38,5 +39,8 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "parcel-bundler": "^1.12.4"
+  },
+  "engine": {
+    "node": ">=10.0.0"
   }
 }
