@@ -30,6 +30,20 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
 }
+.header-nav button{
+  border-color: #fff !important;
+  padding: 5px;
+  
+}
+.header-nav button i{
+  color: #fff !important;
+  font-size: 16px;
+  
+}
+.header-nav .sign-in:hover{
+color: #007bff;
+background-color: #fff;
+}
 .logo{
   width: 35px;
   height: 35px;
@@ -204,7 +218,7 @@ margin-left: 10px;
   background-color: #f7f7f7;
 padding: 30px;
 }
-.form{
+.main-form{
   /* border: 1px solid #007bff; */
   font-size: 18px;
   background-color: #fff;
@@ -231,11 +245,11 @@ padding: 30px;
   color: #007bff;
   font-weight:400
 }
-.form i{
+.main-form i{
   color: #007bff;
   font-size: 42px;
 }
-.form button{
+.main-form button{
   width: 100%;
   font-size: 18px;
   margin: 15px 1px;

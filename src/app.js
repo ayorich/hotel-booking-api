@@ -2,11 +2,11 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-const hpp = require('hpp');
-const xss = require('xss-clean');
-
+// const hpp = require('hpp');
+// const xss = require('xss-clean');
+const compression = require('compression');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errrorController');
 const hotelRouter = require('./routes/hotelRoutes');
@@ -23,7 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Set Security HTTP Headers
-app.use(helmet());
+// app.use(helmet());
 
 // development logging
 if (process.env.NODE_ENV === 'development') {
@@ -46,15 +46,16 @@ app.use(express.json({ limit: '10kb' }));
 app.use(mongoSanitize());
 
 // Data sanitization against XSS
-app.use(xss());
+// app.use(xss());
 
 // prevent parameter pollution and use whitelist to add double query params
-app.use(hpp({
-  whitelist: [
-    'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
-  ]
-}));
+// app.use(hpp({
+//   whitelist: [
+//     'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
+//   ]
+// }));
 
+app.use(compression());
 // test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();

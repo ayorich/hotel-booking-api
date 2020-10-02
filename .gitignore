@@ -3,3 +3,4 @@
 /dev-data/img
 /dev-data/templates
 config.env
+.cache

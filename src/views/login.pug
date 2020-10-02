@@ -5,21 +5,21 @@ block content
   .form-container
     .row.justify-content-center
       .col-md-4
-        .form
+        .main-form
           .text-center
             i.fa.fa-lock(aria-hidden='true')
             .form-title.my-2 LOG INTO YOUR ACCOUNT
           
-          form
+          form.form
             .form-group
                 label(for='uname') Email:
-                input#uemail.form-control.p-3(type='email', placeholder='Enter Email', name='uemail', required='')
+                input#email.form-control.p-3(type='email', placeholder='Enter Email', name='email', required='')
                 
             .form-group
                 label(for='pwd') Password:
-                input#pwd.form-control.p-3(type='password', placeholder='Enter password', name='pswd', required='')
+                input#pwd.form-control.p-3(type='password', placeholder='Enter password', name='pwd', required='')
             
-            button.btn.btn-primary(type='submit') LOG IN
+            button.btn.btn-primary LOG IN
 
 
 
