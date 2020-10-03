@@ -7,7 +7,7 @@ export const login = async (email, password) => {
     try {
         const response = await axios({
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            url: '/api/v1/users/login',
+            url: 'https://hotel-booking-apps.herokuapp.com/api/v1/users/login',
             data: {
                 email,
                 password
