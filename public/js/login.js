@@ -26,8 +26,6 @@ export const login = async (email, password) => {
 
     } catch (err) {
         showAlert('error', 'Log In Failed')
-
-        // console.log('login', err)
     }
 }
 
@@ -48,7 +46,6 @@ export const logout = async () => {
 
     } catch (err) {
         showAlert('error', 'Error logging out! Try again.')
-        // console.log('login', err)
 
     }
 }
