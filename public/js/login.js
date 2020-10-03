@@ -1,5 +1,6 @@
 /*eslint-disable */
 import axios from 'axios'
+import { showAlert } from './alert'
 
 export const login = async (email, password) => {
     const data = {
@@ -16,17 +17,39 @@ export const login = async (email, password) => {
                 ...data
             }
         })
-        console.log(res)
-        // return response;
         if (res.data.status === "Success") {
-            alert('loggrd in sucessfully')
+            showAlert('success', 'logged in sucessfully!')
             window.setTimeout(() => {
                 location.assign('/')
             }, 1500)
         }
 
     } catch (err) {
-        alert('login', err.message)
+        showAlert('error', 'Log In Failed')
+
+        // console.log('login', err)
+    }
+}
+
+
+export const logout = async () => {
+    try {
+        const res = await axios({
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            url: '/api/v1/users/logout',
+
+        })
+        if (res.data.status === "Success") {
+            window.setTimeout(() => {
+                location.assign('/')
+            }, 500)
+
+        }
+
+    } catch (err) {
+        showAlert('error', 'Error logging out! Try again.')
+        // console.log('login', err)
+
     }
 }
 
@@ -37,24 +60,3 @@ export const login = async (email, password) => {
 
 
 
-// try {
-//     const response = await axios('https://cors-anywhere.herokuapp.com/http://127.0.0.1:8000/api/v1/users/login', {
-//         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//         mode: 'cors', // no-cors, *cors, same-origin
-//         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-//         credentials: 'same-origin', // include, *same-origin, omit
-//         headers: {
-//             'Content-Type': 'application/json'
-//             // 'Content-Type': 'application/x-www-form-urlencoded',
-//         },
-//         redirect: 'follow', // manual, *follow, error
-//         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-//         body: data // body data type must match "Content-Type" header
-//     });
-//     console.log(response.json())
-//     return response;
-
-
-// } catch (err) {
-//     console.log(err)
-// }
