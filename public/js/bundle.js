@@ -8411,18 +8411,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var login = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(email, password) {
-    var data, response;
+    var data, res;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log(email, password);
             data = {
               email: email,
               password: password
             };
-            _context.prev = 2;
-            _context.next = 5;
+            _context.prev = 1;
+            _context.next = 4;
             return (0, _axios.default)({
               method: 'POST',
               // *GET, POST, PUT, DELETE, etc.
@@ -8430,24 +8429,31 @@ var login = /*#__PURE__*/function () {
               data: _objectSpread({}, data)
             });
 
-          case 5:
-            response = _context.sent;
-            console.log(response); // return response;
+          case 4:
+            res = _context.sent;
+            console.log(res); // return response;
+
+            if (res.data.status === "Success") {
+              alert('loggrd in sucessfully');
+              window.setTimeout(function () {
+                location.assign('/');
+              }, 1500);
+            }
 
             _context.next = 12;
             break;
 
           case 9:
             _context.prev = 9;
-            _context.t0 = _context["catch"](2);
-            console.log('login', _context.t0.message);
+            _context.t0 = _context["catch"](1);
+            alert('login', _context.t0.message);
 
           case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 9]]);
+    }, _callee, null, [[1, 9]]);
   }));
 
   return function login(_x, _x2) {

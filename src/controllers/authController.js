@@ -72,6 +72,8 @@ exports.protect = catchAsync(async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     // eslint-disable-next-line prefer-destructuring
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
 
   if (!token) {
@@ -92,6 +94,28 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = currentUser;
+  next();
+});
+
+// USE ONLY FOR RENDERED PAGES ,SO NO ERROR
+exports.isLoggedIn = catchAsync(async (req, res, next) => {
+  if (req.cookies.jwt) {
+    // 1.verifies token
+    const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+
+    // 2. CHECK IF USER STILL EXISTS
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) return next();
+
+    // 3.CHECK IF USER CHANGED PASSWORD AFTER THE TOKEN WAS ISSUED
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+      return next();
+    }
+
+    // THERE IS A LOGGED IN USER
+    res.locals.user = currentUser;
+    console.log('isloggedin ', res.locals);
+  }
   next();
 });
 

@@ -2,32 +2,31 @@
 import axios from 'axios'
 
 export const login = async (email, password) => {
-    console.log(email, password)
     const data = {
         email,
         password
     }
 
     try {
-        // axios.post('/api/v1/users/login', {
-        //     ...data
-        // })
-        //     .then(function (response) {
-        //         console.log(response);
-        //     })
-        const response = await axios({
+
+        const res = await axios({
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             url: '/api/v1/users/login',
             data: {
                 ...data
             }
         })
-        console.log(response)
+        console.log(res)
         // return response;
-
+        if (res.data.status === "Success") {
+            alert('loggrd in sucessfully')
+            window.setTimeout(() => {
+                location.assign('/')
+            }, 1500)
+        }
 
     } catch (err) {
-        console.log('login', err.message)
+        alert('login', err.message)
     }
 }
 

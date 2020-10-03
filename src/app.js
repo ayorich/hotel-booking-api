@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
 const xss = require('xss-clean');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const compression = require('compression');
 const AppError = require('./utils/appError');
@@ -24,7 +25,6 @@ app.set('views', path.join(__dirname, 'views'));
 // implement CORS
 app.use(cors());
 app.options('*', cors());
-// app.post('*', cors());
 
 // Serving static files
 app.use(express.static(path.join(__dirname, '../public')));
@@ -48,7 +48,7 @@ app.use('/api', limiter);
 
 // BOdy parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
-
+app.use(cookieParser());
 // data sanitization against NOSQL query injection
 app.use(mongoSanitize());
 
@@ -67,7 +67,8 @@ app.use(compression());
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   // console.log(req.requestTime);
-  console.log(req.body);
+  // console.log(req.body);
+  // console.log(req.cookies);
 
   next();
 });
