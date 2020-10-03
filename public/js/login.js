@@ -3,15 +3,15 @@ import axios from 'axios'
 
 export const login = async (email, password) => {
     console.log(email, password)
-    const data = {
-        email,
-        password
-    }
+    // const data = 
     try {
         const response = await axios({
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            url: '/api/v1/hotels',
-            data: data,
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            url: 'http://127.0.0.1:3000/api/v1/users/login',
+            data: {
+                email,
+                password
+            },
             // headers: {
             //     'Content-Type': 'application/json',
             //     'Accept': 'application/json',
@@ -20,7 +20,6 @@ export const login = async (email, password) => {
 
         })
         console.log(response)
-        alert(`Still in progress, ${email}, ${password}`)
         return response;
 
 
