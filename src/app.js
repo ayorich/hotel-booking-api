@@ -4,8 +4,8 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 // const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-// const hpp = require('hpp');
-// const xss = require('xss-clean');
+const hpp = require('hpp');
+const xss = require('xss-clean');
 const cors = require('cors');
 
 const compression = require('compression');
@@ -24,6 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 // implement CORS
 app.use(cors());
 app.options('*', cors());
+// app.post('*', cors());
 
 // Serving static files
 app.use(express.static(path.join(__dirname, '../public')));
@@ -52,20 +53,21 @@ app.use(express.json({ limit: '10kb' }));
 app.use(mongoSanitize());
 
 // Data sanitization against XSS
-// app.use(xss());
+app.use(xss());
 
 // // prevent parameter pollution and use whitelist to add double query params
-// app.use(hpp({
-//   whitelist: [
-//     'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
-//   ]
-// }));
+app.use(hpp({
+  whitelist: [
+    'hotelType', 'ratingsAverage', 'ratingsQuantity', 'price'
+  ]
+}));
 
 app.use(compression());
 // test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  // console.log(req.headers);
+  // console.log(req.requestTime);
+  console.log(req.body);
 
   next();
 });

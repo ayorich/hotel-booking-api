@@ -3,28 +3,31 @@ import axios from 'axios'
 
 export const login = async (email, password) => {
     console.log(email, password)
-    // const data = 
+    const data = {
+        email,
+        password
+    }
+
     try {
+        // axios.post('/api/v1/users/login', {
+        //     ...data
+        // })
+        //     .then(function (response) {
+        //         console.log(response);
+        //     })
         const response = await axios({
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            url: 'https://hotel-booking-apps.herokuapp.com/api/v1/users/login',
+            url: '/api/v1/users/login',
             data: {
-                email,
-                password
-            },
-            // headers: {
-            //     'Content-Type': 'application/json',
-            //     'Accept': 'application/json',
-            //     'Authorization': 'Bearer <token_here>'
-            // }
-
+                ...data
+            }
         })
         console.log(response)
-        return response;
+        // return response;
 
 
     } catch (err) {
-        console.log(err)
+        console.log('login', err.message)
     }
 }
 
