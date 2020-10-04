@@ -22,34 +22,60 @@ const handleJWTError = () => new AppError('Invalid token. Please log in again', 
 
 const handleJWTExpiredError = () => new AppError('Your token has expired!. Please log in again', 401);
 
-const sendErrorDev = (err, res) => {
-  // console.error('ERROR', err);
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack
-  });
-};
-
-const sendErrorProd = (err, res) => {
-  // console.log(err);
-  if (err.isOperational) {
-    // OPERATIONAL, TRUSTED ERROR: SEND MESSAGE TO CLIENT
+const sendErrorDev = (err, req, res) => {
+  if (req.originalUrl.startsWith('/api')) {
+    // console.error('ERROR', err);
     res.status(err.statusCode).json({
       status: err.status,
+      error: err,
       message: err.message,
+      stack: err.stack
     });
   } else {
+    res.status(err.statusCode).render('error', {
+      title: 'Something went wrong',
+      msg: err.message
+    });
+  }
+};
+
+const sendErrorProd = (err, req, res) => {
+  // FOR API
+  if (req.originalUrl.startsWith('/api')) {
+    if (err.isOperational) {
+      // OPERATIONAL, TRUSTED ERROR: SEND MESSAGE TO CLIENT
+      return res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message,
+      });
+    }
     // PROGRAMMING OR OTHER UNKNOWN ERROR: DON'T LEAK ERROR DETAILS
     // 1.LOG ERROR
     console.error('ERROR', err);
     // 2.SEND GENERIC MESSAGE
-    res.status(500).json({
+    return res.status(500).json({
       status: 'error',
       message: 'Something went very wrong',
     });
   }
+
+  // FOR RENDERED WEBSITE
+
+  if (err.isOperational) {
+    // OPERATIONAL, TRUSTED ERROR: SEND MESSAGE TO CLIENT
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong',
+      msg: err.message
+    });
+  }
+  // PROGRAMMING OR OTHER UNKNOWN ERROR: DON'T LEAK ERROR DETAILS
+  // 1.LOG ERROR
+  console.error('ERROR', err);
+  // 2.SEND GENERIC MESSAGE
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong',
+    msg: 'Please try again later.'
+  });
 };
 
 module.exports = (err, req, res, next) => {
@@ -60,8 +86,9 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     // console.error('dev', err);
 
-    sendErrorDev(err, res);
+    sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
+    // console.log(err);
     let error = { ...err };
     // console.error('prod', error);
 
@@ -88,6 +115,6 @@ module.exports = (err, req, res, next) => {
     // }
     // if (errorCheck) error = handleValidationErrorDB(error);
 
-    sendErrorProd(error, res);
+    sendErrorProd(error, req, res);
   }
 };

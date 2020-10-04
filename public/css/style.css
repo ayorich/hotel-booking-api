@@ -296,3 +296,16 @@ padding: 30px;
 .alert--error {
   background-color: #eb4d4b;
 }
+
+/* ---------error page-------- */
+
+.error {
+  font-size: 18px;
+  min-height: 60vh;
+}
+.error h2{
+  font-size: 28px;
+  color: #eb4d4b;
+  padding: 10px;
+}
+  
