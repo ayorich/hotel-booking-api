@@ -8,7 +8,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-dark.p-4.header-nav
     ul.navbar-nav.mt-2.ml-auto.mt-lg-0.ml-5
       if user
         .btn.btn-dark.btn-lg.mx-3.sign-out LOG OUT
-        a(href='#').user.d-flex.align-items-center.mr-5
+        a(href='/me').user.d-flex.align-items-center.mr-5
           .profile.mr-2
             img.rounded-circle(src=`/img/users/${user.photo}` alt=`photo of ${user.name}`)
           span=user.name.split(' ')[0]
