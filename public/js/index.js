@@ -2,6 +2,7 @@
 import '@babel/polyfill';
 
 import { login, logout } from './login';
+import { showAlert } from './alert'
 
 
 const loginForm = document.querySelector('.form')
@@ -19,3 +20,5 @@ if (loginForm) {
 }
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout)
+
+showAlert('success', 'Do check API documentation. Site rendering still in progress...!', 180000)
