@@ -8,8 +8,11 @@ block content
         .acc-form
           .text-center
             .form-title.my-2 YOUR ACCOUNT SETTINGS
+          //- WITHOUT THE API
+          //- form.form-acc#userdata-form(action='/submit-user-data' method='POST' enctype='multipart/form-data')
           
-          form.form-acc#userdata-form(action='/submit-user-data' method='POST')
+          //- WITH THE API
+          form.form-acc#userdata-form
             .form-group
               label(for='name') Name:
               input#name.form-control.p-3(type='text', name='name' value=`${user.name}`, required='')
@@ -19,7 +22,8 @@ block content
             .form-group
               .image
                 img.rounded-circle(src=`/img/users/${user.photo}` alt=`photo of ${user.name}`)
-              a.btn-text(href='') Choose new photo
+              label(for='photo')
+              input(type='file',accept='image/*', id='photo',name='photo')
             button.btn.btn-primary Save Settings
       
       .col-md-6
