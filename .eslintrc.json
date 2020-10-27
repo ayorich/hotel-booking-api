@@ -7,7 +7,7 @@
     "mocha": true
   },
   "rules": {
-    "indent": 0,
+    // "indent": 0,
     "no-underscore-dangle": 0,
     "no-var": "warn",
     "max-len": 0,

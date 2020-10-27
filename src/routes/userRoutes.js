@@ -6,6 +6,7 @@ const { SUPER_ADMIN, ADMIN } = require('../constants/roles');
 const router = express.Router();
 
 router.post('/signup', authController.signup);
+
 router.post('/login', authController.login);
 router.get('/logout', authController.logOut);
 router.post('/forgotPassword', authController.forgotPassword);
@@ -19,7 +20,7 @@ router.use(authController.protect);
 router.patch('/updateMyPassword', authController.updatePassword);
 
 router.get('/me', userController.getMe, userController.getUser);
-router.patch('/updateMe', userController.uploadUserPhoto, userController.updateMe);
+router.patch('/updateMe', userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 router.patch('/activateUser',
   authController.restrictTo(ADMIN, SUPER_ADMIN),
