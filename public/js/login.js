@@ -17,7 +17,7 @@ export const login = async (email, password) => {
                 ...data
             }
         })
-        if (res.data.status === "Success") {
+        if (res.data.status === "success") {
             showAlert('success', 'logged in sucessfully!', 5000)
             window.setTimeout(() => {
                 location.assign('/')
@@ -37,7 +37,7 @@ export const logout = async () => {
             url: '/api/v1/users/logout',
 
         })
-        if (res.data.status === "Success") {
+        if (res.data.status === "success") {
             window.setTimeout(() => {
                 location.assign('/')
             }, 500)

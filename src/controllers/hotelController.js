@@ -66,7 +66,7 @@ exports.getHotelStats = catchAsync(async (req, res, next) => {
     // },
   ]);
   res.status(200).json({
-    status: 'Success',
+    status: 'success',
     data: {
       stats,
     },

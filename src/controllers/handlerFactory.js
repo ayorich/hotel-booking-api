@@ -9,7 +9,7 @@ exports.deleteOne = (Model) => catchAsync(async (req, res, next) => {
   }
 
   res.status(204).json({
-    status: 'Success',
+    status: 'success',
     data: null,
   });
 });
@@ -33,7 +33,7 @@ exports.updateOne = (Model) => catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: 'Success',
+    status: 'success',
     data: {
       data: doc,
     },

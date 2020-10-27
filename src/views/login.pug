@@ -10,14 +10,14 @@ block content
             i.fa.fa-lock(aria-hidden='true')
             .form-title.my-2 LOG INTO YOUR ACCOUNT
           
-          form.form
+          form.form#login-form
             .form-group
-                label(for='uname') Email:
-                input#email.form-control.p-3(type='email', placeholder='Enter Email', name='email', required='')
+                label(for='email') Email:
+                input#email.form-control.p-3(type='email',value="user@hotel.com" placeholder='Enter Email', name='email', required='')
                 
             .form-group
                 label(for='pwd') Password:
-                input#pwd.form-control.p-3(type='password', placeholder='Enter password', name='pwd', required='')
+                input#pwd.form-control.p-3(type='password',value="test1234" placeholder='Enter password', name='pwd', required='')
             
             button.btn.btn-primary LOG IN
 

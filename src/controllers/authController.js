@@ -23,7 +23,7 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie('jwt', token, cookieOptions);
 
   res.status(statusCode).json({
-    status: 'Success',
+    status: 'success',
     token,
     // data: {
     //   user
@@ -71,7 +71,7 @@ exports.logOut = (req, res) => {
     expires: new Date(Date.now() * 10 * 1000),
     httpOnly: true
   });
-  res.status(200).json({ status: 'Success' });
+  res.status(200).json({ status: 'success' });
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
