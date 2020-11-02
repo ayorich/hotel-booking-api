@@ -35,3 +35,6 @@ users ------ bookings ===> 1:many parent-referencing
 
 //HTML => PUG CONVERTER
 https://pughtml.com/
+
+//development mail server 
+https://mailtrap.io/

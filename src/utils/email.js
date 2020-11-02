@@ -31,7 +31,7 @@ module.exports = class Email {
   async send(template, subject) {
     // send the actual email
     // 1. RENDER HTML FOR EMAIL BASE ON PUG TEMPLATE
-    const html = pug.renderFile(`${__dirname}/../views/emails/${template}.pug`, {
+    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
       subject
@@ -52,5 +52,8 @@ module.exports = class Email {
 
   async sendWelcome() {
     await this.send('welcome', 'Welcome to hotel booking api app!');
+  }
+  async sendPasswordReset() {
+    await this.send('passwordReset', 'Your password reset token (valid for only 10 minutes)')
   }
 };
