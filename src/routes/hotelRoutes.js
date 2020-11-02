@@ -44,6 +44,8 @@ router
   .get(authController.protect, hotelController.getHotel)
   .patch(authController.protect,
     authController.restrictTo(ADMIN, SUPER_ADMIN),
+    hotelController.uploadHotelImages,
+    hotelController.resizeHotelImages,
     hotelController.updateHotel)
   .delete(authController.protect,
     authController.restrictTo(ADMIN, SUPER_ADMIN),

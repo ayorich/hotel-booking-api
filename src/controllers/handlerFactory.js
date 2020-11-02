@@ -16,8 +16,7 @@ exports.deleteOne = (Model) => catchAsync(async (req, res, next) => {
 
 exports.updateOne = (Model) => catchAsync(async (req, res, next) => {
   const reqBody = Object.keys(req.body).length;
-
-  if (reqBody === 0) throw new Error('update body is empty');
+  if (reqBody === 0 && !req.files && !req.file) throw new Error('update body is empty');
 
   if (req.body.password || req.body.passwordConfirm) {
     return next(new AppError('This route is not for password updates,Please use /updateMyPassword.', 400));
