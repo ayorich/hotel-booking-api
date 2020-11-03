@@ -3,29 +3,42 @@ const nodemailer = require('nodemailer');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
 
+const {
+  NODE_ENV,
+  EMAIL_FROM,
+  MAIL_HOST,
+  HOST_USERNAME,
+  HOST_PASSWORD
+} = process.env
+
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `Ayodele Kayode <${process.env.EMAIL_FROM}>`;
+    this.from = `Ayodele Kayode <${EMAIL_FROM}>`;
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
+    if (NODE_ENV === 'production') {
       // sendgrid
-      return 1;
+      return nodemailer.createTransport({
+        service: MAIL_HOST,
+        secure: true,
+        auth: {
+          user: HOST_USERNAME,
+          pass: HOST_PASSWORD
+        }
+      })
     }
-    // 1. create a transporter
     return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      host: "smtp.mailtrap.io",
+      port: 2525,
       auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
+        user: "85ee7fdf36847d",
+        pass: "90c70b20f6e692"
       }
-
-    });
+    })
   }
 
   async send(template, subject) {
@@ -47,7 +60,10 @@ module.exports = class Email {
     };
 
     // 3.CREATE A TRANSPORT AND SEND EMAIL
-    await this.newTransport().sendMail(mailOptions);
+    await this.newTransport().sendMail(mailOptions)
+
+
+
   }
 
   async sendWelcome() {
@@ -57,3 +73,5 @@ module.exports = class Email {
     await this.send('passwordReset', 'Your password reset token (valid for only 10 minutes)')
   }
 };
+
+
