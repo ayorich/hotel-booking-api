@@ -16,10 +16,12 @@ export const bookHotelRoom = async (hotelId, roomId) => {
         // console.log(data)
         //2.create checkout form + charge credit card
         const redirectUri = data.data.authorization_url;
+
         window.location.href = redirectUri;
 
     } catch (err) {
-        console.log(err)
-        showAlert('error', err.message)
+        console.log(err.message)
+        console.log(...err)
+        showAlert('error', "error initializing payment")
     }
 }

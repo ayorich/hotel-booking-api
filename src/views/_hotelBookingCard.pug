@@ -2,17 +2,17 @@ mixin hotelBookinCard(hotel)
   each suite in hotel.roomTypes
     .hotel-booking
       .row  
-        .col-4.hotel-booking-img
+        .col-xl-4.hotel-booking-img
           img.card-img-top(src='/img/hotels/hotel-5c88fa8cf4afda39709c295d-1604300510656-2.jpeg', alt=`${suite.name}`)
-        .col-4.p-4
-          h3.my-2=suite.name
-          .hotel-booking-text.my-2.mt-4
+        .col-xl-4.p-4
+          h3.my-2.m-3=suite.name
+          .hotel-booking-text.my-2.mt-4.m-3
             i.fa.fa-money(aria-hidden='true')
             P.d-inline-block.ml-3=`₦ ${suite.price.toLocaleString()} per room`
-          .hotel-booking-text.my-2
+          .hotel-booking-text.my-2.m-3
             i.fa.fa-bed(aria-hidden='true')
             P.d-inline-block.ml-3=`${suite.roomsAvailable} available rooms`
-        .col-4.d-flex
+        .col-xl-4.d-flex
           if user
             button.align-self-end.btn.btn-primary.m-3.mr-4#book-room(type='button' data-hotel-id=`${hotel.id}` data-room-id=`${suite.id}`) BOOK NOW
           else

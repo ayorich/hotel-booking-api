@@ -74,7 +74,6 @@ if (userPasswordForm) {
 
     })
 }
-console.log(bookBtn)
 
 if (bookBtn) {
     bookBtn.forEach(el => el.addEventListener('click', e => {

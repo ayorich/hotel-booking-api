@@ -26,19 +26,15 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     const { body } = await paystack.initializeTransaction({
         amount: roomDetails[0].price * 100, // 5,000 Naira (remember you have to pass amount in kobo)
         email: req.user.email,
-        callback_url: `${req.protocol}://${req.get('host')}/?hotel=${hotelId}&user=${req.user.id}&price=${roomDetails[0].price}&roomType=${roomDetails[0].name.split(' ')[0]}`,
-        // reference: req.params.hotelId,
+        callback_url: `${req.protocol}://${req.get('host')}/verify-payment`,
         metadata: JSON.stringify({
             hotel_id: hotelId,
-            custom_fields: [
-                {
-                    name: hotel.name,
-                    roomType: roomDetails.name,
-                    description: hotel.summary,
-                    images: [`https://hotel-booking-apps.herokuapp.com/img/hotels/${hotel.imageCover}`],
-                    quantity: 1
-                }
-            ]
+            user_id: req.user._id,
+            name: hotel.name,
+            roomType: roomDetails[0].name,
+            price: roomDetails[0].price,
+            images: [`https://hotel-booking-apps.herokuapp.com/img/hotels/${hotel.imageCover}`],
+            quantity: 1
         }),
     });
     // 3.create session as response
@@ -47,17 +43,23 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-    // temporary because its unsecured , due to callback url if know
+exports.verifyPayment = catchAsync(async (req, res, next) => {
+    const { reference } = req.query;
+    const { body } = await paystack.verifyTransaction({
+        reference
+    });
     const {
-        hotel, user, price, roomType
-    } = req.query;
+        hotel_id: hotel,
+        user_id: user,
+        price,
+        roomType
 
-    if (!hotel && !user && !price && !roomType) return next();
+    } = body.data.metadata;
     await Booking.create({
         hotel, user, price, roomType
     });
-    res.redirect(req.originalUrl.split('?')[0]);
+    res.locals.data = body.data.metadata;
+    next();
 });
 
 exports.createBooking = factory.createOne(Booking);

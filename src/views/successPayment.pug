@@ -1,0 +1,23 @@
+extends base
+
+
+block content
+  .form-container
+    .row.justify-content-center
+      .col-md-6
+        .card.text-center
+            img.card-img-top(src=`${data.images[0]}`, alt='...')
+            h2.card-header Successfully Booked
+            .card-body
+                h3.card-title=data.name
+                h4.card-text=data.roomType
+                h4.card-text=`₦ ${data.price}`
+                a.mt-3.btn.btn-primary(href='/my-bookings')
+                    h3 Continue
+            h3.card-footer.text-muted ENJOY YOUR STAY
+
+
+
+
+                
+

@@ -64,6 +64,12 @@ exports.getMyBookings = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getVerifiedView = (req, res, next) => {
+  res.status(200).render('successPayment', {
+    title: 'Thanks for booking',
+  });
+};
+
 exports.updateUserData = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(req.user.id, {
     name: req.body.name,

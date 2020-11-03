@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
@@ -43,5 +44,13 @@ process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION!  Shutting down...');
   server.close(() => {
     process.exit(1);
+  });
+});
+
+// HANDLED SIGTERM EMMITTED BY HEROKU EVERY 24 HRS
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECIEVED , Shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
   });
 });

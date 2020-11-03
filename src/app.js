@@ -17,8 +17,13 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const viewRouter = require('./routes/viewRoutes');
+const bookingController = require('./controllers/bookingController');
+const viewsController = require('./controllers/viewsController');
 
 const app = express();
+
+app.enable('trust proxy'); // because of heroku proxy redirect to app
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -46,6 +51,8 @@ const limiter = rateLimit({
 });
 
 app.use('/api', limiter);
+// for payment verification
+app.use('/verify-payment', bookingController.verifyPayment, viewsController.getVerifiedView);
 
 // BOdy parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));

@@ -7,8 +7,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-dark.p-4.header-nav
   #navbarTogglerDemo03.collapse.navbar-collapse
     ul.navbar-nav.mt-2.ml-auto.mt-lg-0.ml-5
       if user
-        a(href='/my-bookings').user.d-flex.align-items-center.mr-5
-          .btn.btn-light.btn-lg.mx-3 MY BOOKINGS
+        a(type='button',href='/my-bookings').user.d-flex.align-items-center.mr-5
+          .btn.btn-light.btn-lg.mx-3.w-100 MY BOOKINGS
         .btn.btn-dark.btn-lg.mx-3.sign-out LOG OUT
         a(href='/me').user.d-flex.align-items-center.mr-5
           .profile.mr-2

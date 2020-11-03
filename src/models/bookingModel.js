@@ -14,7 +14,7 @@ const bookingSchema = new mongoose.Schema({
         required: [true, 'Booking must belong to a user!']
     },
     price: {
-        type: Number,
+        type: String,
         required: [true, 'Booking must belong to a price']
     },
     roomType: {
