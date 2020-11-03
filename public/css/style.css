@@ -30,6 +30,11 @@ body {
   -ms-flex-direction: column;
   flex-direction: column;
 }
+@media screen and (max-width:760px) {
+  body{
+  padding:0rem;
+      }
+}
 .header-nav button{
   border-color: #fff !important;
   padding: 5px;
@@ -74,6 +79,12 @@ background-color: #fff;
 .main-content{
   padding: 5rem 6rem;
   background-color: #f7f7f7;
+  
+}
+@media screen and (max-width:760px) {
+  .main-content{
+  padding:2rem 1.5rem;
+      }
 }
 .main-card{
   margin: 3rem 2rem;
@@ -154,6 +165,12 @@ background-color: #fff;
   margin: 3rem ;
   border-radius: 10px;
   color: #000;
+}
+@media screen and (max-width:760px) {
+  .hotel-amenities{
+    margin: 0rem;
+  padding:1rem 0rem;
+      }
 }
 .hotel-amenities-text{
   font-size: 14px;

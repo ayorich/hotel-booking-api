@@ -9,6 +9,7 @@ router.get('/', bookingController.createBookingCheckout, authController.isLogged
 router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
 router.get('/hotel/:slug', authController.isLoggedIn, viewsController.getHotel);
 router.get('/me', authController.protect, viewsController.getAccount);
+router.get('/my-bookings', authController.protect, viewsController.getMyBookings);
 
 router.post('/submit-user-data', authController.protect, viewsController.updateUserData);
 

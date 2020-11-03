@@ -3,7 +3,7 @@ const PayStack = require('paystack-node');
 const Hotel = require('../models/hotelModel');
 const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
-// const factory = require('./handlerFactory');
+const factory = require('./handlerFactory');
 // const AppError = require('../utils/appError');
 
 const {
@@ -22,12 +22,11 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     if (hotel) {
         roomDetails = hotel.roomTypes.filter((ob) => ob.id.toString() === roomId);
     }
-    // console.log(roomDetails[0]);
     // 2.create checkout session
     const { body } = await paystack.initializeTransaction({
         amount: roomDetails[0].price * 100, // 5,000 Naira (remember you have to pass amount in kobo)
         email: req.user.email,
-        callback_url: `${req.protocol}://${req.get('host')}/?hotel=${hotelId}&user=${req.user.id}&price=${roomDetails[0].price}&roomType=${roomDetails[0].name}`,
+        callback_url: `${req.protocol}://${req.get('host')}/?hotel=${hotelId}&user=${req.user.id}&price=${roomDetails[0].price}&roomType=${roomDetails[0].name.split(' ')[0]}`,
         // reference: req.params.hotelId,
         metadata: JSON.stringify({
             hotel_id: hotelId,
@@ -42,12 +41,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
             ]
         }),
     });
-    console.log(body);
-    // console.log(request.body);
     // 3.create session as response
     res.status(200).json({
         ...body
-        // null: null
     });
 });
 
@@ -63,3 +59,9 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
     });
     res.redirect(req.originalUrl.split('?')[0]);
 });
+
+exports.createBooking = factory.createOne(Booking);
+exports.getBooking = factory.getOne(Booking);
+exports.getAllBooking = factory.getAll(Booking);
+exports.updateBooking = factory.updateOne(Booking);
+exports.deleteBooking = factory.deleteOne(Booking);

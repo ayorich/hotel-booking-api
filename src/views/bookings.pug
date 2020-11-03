@@ -1,0 +1,31 @@
+extends base
+
+block content
+  .main-content
+    .content
+      .row
+        each booked in bookings
+          .col-md-6.col-xl-4
+            .card.main-card 
+              .img-card
+                img.card-img-top(src=`/img/hotels/${booked.hotel.imageCover}`, alt=`${booked.hotel.name}`)
+              .card-body.p-5
+                h2.card-title=booked.hotel.name
+                h4.card-text.mb-2=`Booked on: ${booked.createdAt.toDateString()}`
+                h4.card-text.mb-3=`Time: ${booked.createdAt.toLocaleTimeString('en-US')}`
+                h3.card-text.mb-5=`Price: ₦ ${booked.price.toLocaleString()}`
+                .card-detail.mb-2
+                  i.fa.fa-map-marker(aria-hidden='true')
+                  p.d-inline-block.ml-3=`${booked.hotel.location.city}, ${booked.hotel.location.state}`
+                .card-detail.mb-2
+                  i.fa.fa-star-o(aria-hidden='true')
+                  p.d-inline-block.ml-3=`${booked.hotel.ratingsAverage} rating (${booked.hotel.ratingsQuantity})`
+                .card-detail.mb-2
+                  i.fa.fa-bed(aria-hidden='true')
+                  p.d-inline-block.ml-3=`${booked.roomType.toLocaleString()} Suite`
+                .card-action.mt-2
+                  a.btn.btn-primary.btn-lg.btn-block(href=`/hotel/${booked.hotel.slug}`) Review
+
+        
+        
+

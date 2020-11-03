@@ -33,9 +33,10 @@ const bookingSchema = new mongoose.Schema({
 
 bookingSchema.pre(/^find/, function (next) {
     this.populate('user').populate({
-        path: 'Hotel',
-        select: 'name'
+        path: 'hotel',
+        select: 'name summary location ratingsQuantity ratingsAverage slug imageCover'
     });
+    next();
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);

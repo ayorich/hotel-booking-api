@@ -8645,7 +8645,7 @@ var bookHotelRoom = /*#__PURE__*/function () {
             _context.prev = 9;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
-            (0, _alert.showAlert)('error', _context.t0);
+            (0, _alert.showAlert)('error', _context.t0.message);
 
           case 13:
           case "end":

@@ -20,6 +20,6 @@ export const bookHotelRoom = async (hotelId, roomId) => {
 
     } catch (err) {
         console.log(err)
-        showAlert('error', err)
+        showAlert('error', err.message)
     }
 }
