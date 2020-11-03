@@ -30,30 +30,33 @@ exports.uploadHotelImages = upload.fields([
 // upload.array('images', 3)
 
 exports.resizeHotelImages = catchAsync(async (req, res, next) => {
-  if (!req.files.imageCover || !req.files.images) return next();
-  // 1.Cover image
-  req.body.imageCover = `hotel-${req.params.id}-${Date.now()}-cover.jpeg`;
+  if (!req.files) return next();
 
-  await sharp(req.files.imageCover[0].buffer)
-    .resize(2000, 1333)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`public/img/hotels/${req.body.imageCover}`);
+  if (req.files.imageCover) {
+    // 1.Cover image
+    req.body.imageCover = `hotel-${req.params.id}-${Date.now()}-cover.jpeg`;
 
-  // 2.images
-  req.body.images = [];
-  await Promise.all(req.files.images.map(async (file, i) => {
-    const filename = `hotel-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
-
-    await sharp(file.buffer)
+    await sharp(req.files.imageCover[0].buffer)
       .resize(2000, 1333)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
-      .toFile(`public/img/hotels/${filename}`);
+      .toFile(`public/img/hotels/${req.body.imageCover}`);
+  }
+  if (req.files.images) {
+    // 2.images
+    req.body.images = [];
+    await Promise.all(req.files.images.map(async (file, i) => {
+      const filename = `hotel-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
-    req.body.images.push(filename);
-  }));
+      await sharp(file.buffer)
+        .resize(2000, 1333)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`public/img/hotels/${filename}`);
 
+      req.body.images.push(filename);
+    }));
+  }
   next();
 });
 // ALIASING AN ENDPOINT(PREFILLED)

@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 const PayStack = require('paystack-node');
 const Hotel = require('../models/hotelModel');
+const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 // const factory = require('./handlerFactory');
 // const AppError = require('../utils/appError');
@@ -26,10 +27,10 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     const { body } = await paystack.initializeTransaction({
         amount: roomDetails[0].price * 100, // 5,000 Naira (remember you have to pass amount in kobo)
         email: req.user.email,
-        callback_url: `${req.protocol}://${req.get('host')}/`,
+        callback_url: `${req.protocol}://${req.get('host')}/?hotel=${hotelId}&user=${req.user.id}&price=${roomDetails[0].price}&roomType=${roomDetails[0].name}`,
         // reference: req.params.hotelId,
         metadata: JSON.stringify({
-            hotel_id: req.params.hotelID,
+            hotel_id: hotelId,
             custom_fields: [
                 {
                     name: hotel.name,
@@ -48,4 +49,17 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         ...body
         // null: null
     });
+});
+
+exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+    // temporary because its unsecured , due to callback url if know
+    const {
+        hotel, user, price, roomType
+    } = req.query;
+
+    if (!hotel && !user && !price && !roomType) return next();
+    await Booking.create({
+        hotel, user, price, roomType
+    });
+    res.redirect(req.originalUrl.split('?')[0]);
 });
