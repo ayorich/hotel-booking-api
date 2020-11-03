@@ -16,4 +16,4 @@ mixin hotelBookinCard(hotel)
           if user
             button.align-self-end.btn.btn-primary.m-3.mr-4#book-room(type='button' data-hotel-id=`${hotel.id}` data-room-id=`${suite.id}`) BOOK NOW
           else
-            a.align-self-end.btn.btn-primary.m-3.mr-4(href='/login') Log in to book room
+            p=''

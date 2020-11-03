@@ -21,7 +21,7 @@ module.exports = class Email {
 
   newTransport() {
     if (NODE_ENV === 'production') {
-      // sendgrid
+      // ZOHO
       return nodemailer.createTransport({
         service: MAIL_HOST,
         secure: true,

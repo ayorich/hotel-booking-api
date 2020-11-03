@@ -1,0 +1,32 @@
+extends base
+
+
+block content
+  .form-container
+    .row.justify-content-center
+      .col-md-4
+        .main-form
+          .text-center
+            i.fa.fa-lock(aria-hidden='true')
+            .form-title.my-2 REGISTER AN ACCOUNT
+          
+          form.form#signup-form
+            .form-group
+                //- label(for='name') Name:
+                input#name.form-control.p-3(type='text',value="" placeholder='Enter Name', name='name', required='')
+                
+            .form-group
+                //- label(for='email') Email:
+                input#email.form-control.p-3(type='email',value="" placeholder='Enter Email', name='email', required='')
+                
+            .form-group
+                //- label(for='pwd') Password:
+                input#pwd.form-control.p-3(type='password',value="" placeholder='Enter password', name='pwd', required='')
+            .form-group
+                //- label(for='cpwd') Confirm Password:
+                input#cpwd.form-control.p-3(type='password',value="" placeholder='Confirm password', name='cpwd', required='')
+            
+            button.btn.btn-primary SIGN UP
+
+
+

@@ -43,7 +43,12 @@ block content
     
     .row.justify-content-center.my-5
       .col-md-6.my-3
-        h2.m-4.mb-5.text-center.hotel-detail-heading='BOOK NOW'.toUpperCase()
+        if user
+          h2.m-4.mb-5.text-center.hotel-detail-heading='BOOK NOW'.toUpperCase()
+        else
+          a.m-4.mb-3.hotel-detail-login(type='button',href='/login') 
+            h2.text-center Log in to book room
+
         //- each suite in hotel.roomTypes
         +hotelBookinCard(hotel)
           

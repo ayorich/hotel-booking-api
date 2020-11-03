@@ -2,11 +2,12 @@
 import '@babel/polyfill';
 import { showAlert } from './alert';
 
-import { login, logout } from './login';
+import { login, logout, signUp } from './auth';
 import { updateSettings } from './updateSettings';
 import { bookHotelRoom } from './paystack';
 
 const loginForm = document.querySelector('#login-form')
+const signUpForm = document.querySelector('#signup-form')
 const logOutBtn = document.querySelector('.sign-out')
 const userDataForm = document.querySelector('#userdata-form')
 const userPasswordForm = document.querySelector('#pwd-form')
@@ -20,6 +21,19 @@ if (loginForm) {
         const password = document.getElementById('pwd').value
 
         login(email, password)
+    })
+}
+
+if (signUpForm) {
+
+    signUpForm.addEventListener('submit', e => {
+        e.preventDefault()
+        const name = document.getElementById('name').value
+        const email = document.getElementById('email').value
+        const password = document.getElementById('pwd').value
+        const confrimPassword = document.getElementById('cpwd').value
+
+        signUp(email, password, confrimPassword, name)
     })
 }
 
