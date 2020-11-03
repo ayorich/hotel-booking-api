@@ -44,8 +44,8 @@ block content
     .row.justify-content-center.my-5
       .col-md-6.my-3
         h2.m-4.mb-5.text-center.hotel-detail-heading='BOOK NOW'.toUpperCase()
-        each suite in hotel.roomTypes
-          +hotelBookinCard(suite)
+        //- each suite in hotel.roomTypes
+        +hotelBookinCard(hotel)
           
     .row.testimonial
       .col-12.my-3

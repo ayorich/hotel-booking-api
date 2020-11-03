@@ -3,13 +3,14 @@ import '@babel/polyfill';
 import { showAlert } from './alert';
 
 import { login, logout } from './login';
-import { updateSettings } from './updateSettings'
+import { updateSettings } from './updateSettings';
+import { bookHotelRoom } from './paystack';
 
 const loginForm = document.querySelector('#login-form')
 const logOutBtn = document.querySelector('.sign-out')
 const userDataForm = document.querySelector('#userdata-form')
 const userPasswordForm = document.querySelector('#pwd-form')
-
+const bookBtn = document.querySelectorAll('#book-room')
 
 if (loginForm) {
 
@@ -58,5 +59,15 @@ if (userPasswordForm) {
             document.getElementById('confirmpwd').value = ''
 
     })
+}
+console.log(bookBtn)
+
+if (bookBtn) {
+    bookBtn.forEach(el => el.addEventListener('click', e => {
+        e.target.textContent = 'Processing...';
+        const { hotelId, roomId } = e.target.dataset;
+        bookHotelRoom(hotelId, roomId)
+    })
+    )
 }
 // showAlert('success', 'Do check API documentation. Site rendering still in progress...!', 180000)
